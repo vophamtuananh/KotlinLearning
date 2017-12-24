@@ -1,0 +1,94 @@
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+ext {
+    // Libraries
+    rxJava2 = '2.1.7'
+    rxAndroid = '2.0.1'
+    archLifecycle = '1.0.0'
+    androidSupportLibrary = '27.0.2'
+    constraintLayout = '1.0.2'
+    dagger2 = '2.13'
+    okHttp = '3.9.0'
+    retrofit2 = '2.3.0'
+    gson = '2.8.1'
+    autoValue = '1.4.1'
+    autoValueGson = '0.5.0'
+    roomVersion = '1.0.0'
+
+    // FireBase
+    facebook = '4.29.0'
+    firebase = '11.8.0'
+    firebaseUI = '3.1.2'
+
+    // Instrumentation
+    leakCanary = '1.5.1'
+
+    // Testing
+    junit = '4.12'
+    runner = '1.0.1'
+    espresso = '3.0.1'
+
+    // Kotlin
+    kotlin = '1.1.51'
+
+    commonDependencies = [
+            rxJava2                     : "io.reactivex.rxjava2:rxjava:${rxJava2}",
+            rxAndroid                   : "io.reactivex.rxjava2:rxandroid:${rxAndroid}",
+
+            dagger2                     : "com.google.dagger:dagger:${dagger2}",
+            dagger2Compiler             : "com.google.dagger:dagger-compiler:${dagger2}",
+
+            supportAppCompatV7          : "com.android.support:appcompat-v7:${androidSupportLibrary}",
+            supportDesign               : "com.android.support:design:${androidSupportLibrary}",
+            supportV13                  : "com.android.support:support-v13:${androidSupportLibrary}",
+            supportAnnotation           : "com.android.support:support-annotations:${androidSupportLibrary}",
+            supportCardView             : "com.android.support:cardview-v7:${androidSupportLibrary}",
+            supportRecyclerView         : "com.android.support:recyclerview-v7:${androidSupportLibrary}",
+            constraintLayout            : "com.android.support.constraint:constraint-layout:${constraintLayout}",
+
+            archLifecycleRuntime        : "android.arch.lifecycle:runtime:${archLifecycle}",
+            archLifecycleExtensions     : "android.arch.lifecycle:extensions:${archLifecycle}",
+            archLifecycleReactiveStreams: "android.arch.lifecycle:reactivestreams:${archLifecycle}",
+            archLifecycleCompiler       : "android.arch.lifecycle:compiler:${archLifecycle}",
+
+            room                        : "android.arch.persistence.room:runtime:${roomVersion}",
+            roomCompiler                : "android.arch.persistence.room:compiler:${roomVersion}",
+
+            autoValue                   : "com.google.auto.value:auto-value:${autoValue}",
+            autoValueGson               : "com.ryanharter.auto.value:auto-value-gson:${autoValueGson}",
+
+            okHttp                      : "com.squareup.okhttp3:okhttp:${okHttp}",
+            okHttpInterceptor           : "com.squareup.okhttp3:logging-interceptor:${okHttp}",
+
+            retrofit2                   : "com.squareup.retrofit2:retrofit:${retrofit2}",
+            retrofitRxAdapter           : "com.squareup.retrofit2:adapter-rxjava2:${retrofit2}",
+            retrofitConverter           : "com.squareup.retrofit2:converter-gson:${retrofit2}",
+
+            gson                        : "com.google.code.gson:gson:${gson}",
+
+            facebook                    : "com.facebook.android:facebook-android-sdk:${facebook}",
+
+            firebaseAuth                : "com.google.firebase:firebase-auth:${firebase}",
+            firebaseDatabase            : "com.google.firebase:firebase-database:${firebase}",
+            firebaseDatabaseUI          : "com.firebaseui:firebase-ui-database:${firebaseUI}",
+
+            kotlin                      : "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin"
+    ]
+
+    commonTestDependencies = [
+            junit   : "junit:junit:${junit}",
+            runner : "com.android.support.test:runner:${runner}",
+            espresso : "com.android.support.test.espresso:espresso-core:${espresso}",
+            archTest: "android.arch.core:core-testing:${archLifecycle}"
+    ]
+
+    developmentDependencies = [
+            leakcanary    : "com.squareup.leakcanary:leakcanary-android:${leakCanary}",
+            leakcanaryNoOp: "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanary}"
+    ]
+}

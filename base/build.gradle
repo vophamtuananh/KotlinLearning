@@ -1,0 +1,74 @@
+apply plugin: 'com.android.feature'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    def androidVersions = rootProject.ext.android
+
+    compileSdkVersion androidVersions.compileSdkVersion
+
+
+    baseFeature true
+
+    defaultConfig {
+        minSdkVersion androidVersions.minSdkVersion
+        targetSdkVersion androidVersions.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    def commonDependencies = rootProject.ext.commonDependencies
+
+    // Kotlin
+    implementation commonDependencies.kotlin
+
+    // Android
+    api commonDependencies.supportAppCompatV7
+    api commonDependencies.supportRecyclerView
+    api commonDependencies.constraintLayout
+    api commonDependencies.supportDesign
+
+    // Architecture Components
+    api commonDependencies.archLifecycleExtensions
+
+    // Dagger 2
+    api commonDependencies.dagger2
+    annotationProcessor commonDependencies.dagger2Compiler
+
+    // Rx
+    api commonDependencies.rxJava2
+    api commonDependencies.rxAndroid
+
+    // Testing
+    testImplementation commonTestDependencies.junit
+    androidTestImplementation commonTestDependencies.runner
+    androidTestImplementation commonTestDependencies.espresso
+
+    application project(':app')
+}

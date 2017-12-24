@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="event"
+            type="com.vophamtuananh.base.dialog.ConfirmDialog"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <com.vophamtuananh.base.widgets.PercentLinearLayout
+            android:id="@+id/ll_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:pll_percent="80"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_warning"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/positive_8dp"
+                android:paddingEnd="@dimen/positive_8dp"
+                android:paddingTop="@dimen/positive_6dp"
+                android:paddingBottom="@dimen/positive_4dp" >
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="@dimen/positive_25dp"
+                    android:layout_height="@dimen/positive_25dp"/>
+
+                <com.vophamtuananh.base.widgets.CustomFontTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/positive_7dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:maxLines="2"
+                    android:textColor="@color/colorWhite"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_corner"
+                android:layout_margin="@dimen/positive_2dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.vophamtuananh.base.widgets.CustomFontTextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/positive_10dp"
+                    android:layout_marginEnd="@dimen/positive_10dp"
+                    android:layout_marginTop="@dimen/positive_15dp"
+                    android:layout_marginBottom="@dimen/positive_11dp"
+                    android:textSize="@dimen/text_size_12sp"
+                    android:textColor="@color/text_color"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/positive_4dp"
+                    android:orientation="horizontal">
+
+                    <com.vophamtuananh.base.widgets.AnimButton
+                        android:id="@+id/btn_yes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_success"
+                        android:paddingTop="@dimen/positive_8dp"
+                        android:paddingBottom="@dimen/positive_8dp"
+                        android:layout_marginEnd="@dimen/positive_2dp"
+                        android:text="@string/yes"
+                        android:textColor="@color/colorWhite"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:onClick="@{() -> event.onYesCliked()}"/>
+
+
+                    <com.vophamtuananh.base.widgets.AnimButton
+                        android:id="@+id/btn_no"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_warning"
+                        android:paddingTop="@dimen/positive_8dp"
+                        android:paddingBottom="@dimen/positive_8dp"
+                        android:layout_marginStart="@dimen/positive_2dp"
+                        android:text="@string/cancel"
+                        android:textColor="@color/colorWhite"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:onClick="@{() -> event.onNoCliked()}"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.vophamtuananh.base.widgets.PercentLinearLayout>
+    </FrameLayout>
+
+</layout>

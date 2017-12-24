@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PercentFrameLayout">
+        <attr name="pfl_measure_linear" format="boolean" />
+        <attr name="pfl_should_square" format="boolean" />
+        <attr name="pfl_percent" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="PercentLinearLayout">
+        <attr name="pll_measure_linear" format="boolean" />
+        <attr name="pll_should_square" format="boolean" />
+        <attr name="pll_percent" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomFontTextView">
+        <attr name="cftv_font" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="AnimButton">
+        <attr name="ab_font" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="LoadingView">
+        <attr name="lv_measure_linear" format="boolean" />
+        <attr name="lv_should_square" format="boolean" />
+        <attr name="lv_percent" format="integer" />
+        <attr name="indicatorName" format="string" />
+        <attr name="indicatorColor" format="color" />
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="event"
+            type="com.vophamtuananh.base.dialog.InformDialog"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <com.vophamtuananh.base.widgets.PercentLinearLayout
+            android:id="@+id/ll_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:pll_percent="80"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_error"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/positive_8dp"
+                android:paddingEnd="@dimen/positive_8dp"
+                android:paddingTop="@dimen/positive_6dp"
+                android:paddingBottom="@dimen/positive_4dp" >
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="@dimen/positive_25dp"
+                    android:layout_height="@dimen/positive_25dp"/>
+
+                <com.vophamtuananh.base.widgets.CustomFontTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/positive_7dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_16sp"
+                    android:maxLines="2"
+                    android:textColor="@color/colorWhite"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_corner"
+                android:layout_margin="@dimen/positive_2dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.vophamtuananh.base.widgets.CustomFontTextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/positive_10dp"
+                    android:layout_marginEnd="@dimen/positive_10dp"
+                    android:layout_marginTop="@dimen/positive_15dp"
+                    android:layout_marginBottom="@dimen/positive_11dp"
+                    android:textColor="@color/text_color"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_12sp"/>
+
+                <com.vophamtuananh.base.widgets.AnimButton
+                    android:id="@+id/btn_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_error"
+                    android:text="@string/ok"
+                    android:textColor="@color/colorWhite"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/positive_4dp"
+                    android:paddingTop="@dimen/positive_8dp"
+                    android:paddingBottom="@dimen/positive_8dp"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:onClick="@{() -> event.onConfirmClicked()}"/>
+            </LinearLayout>
+
+        </com.vophamtuananh.base.widgets.PercentLinearLayout>
+    </FrameLayout>
+
+</layout>
