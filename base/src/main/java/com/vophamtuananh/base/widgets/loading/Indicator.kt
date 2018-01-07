@@ -30,10 +30,6 @@ abstract class Indicator(color: Int) : Drawable(), Animatable {
         mPaint.isAntiAlias = true
     }
 
-    fun getColor(): Int {
-        return mPaint.color
-    }
-
     fun setColor(color: Int) {
         mPaint.color = color
     }
@@ -129,20 +125,16 @@ abstract class Indicator(color: Int) : Drawable(), Animatable {
         setDrawBounds(bounds)
     }
 
-    fun setDrawBounds(drawBounds: Rect) {
+    private fun setDrawBounds(drawBounds: Rect) {
         setDrawBounds(drawBounds.left, drawBounds.top, drawBounds.right, drawBounds.bottom)
     }
 
-    fun setDrawBounds(left: Int, top: Int, right: Int, bottom: Int) {
+    private fun setDrawBounds(left: Int, top: Int, right: Int, bottom: Int) {
         this.drawBounds = Rect(left, top, right, bottom)
     }
 
     fun postInvalidate() {
         invalidateSelf()
-    }
-
-    fun getDrawBounds(): Rect {
-        return drawBounds
     }
 
     fun getWidth(): Int {
@@ -153,19 +145,4 @@ abstract class Indicator(color: Int) : Drawable(), Animatable {
         return drawBounds.height()
     }
 
-    fun centerX(): Int {
-        return drawBounds.centerX()
-    }
-
-    fun centerY(): Int {
-        return drawBounds.centerY()
-    }
-
-    fun exactCenterX(): Float {
-        return drawBounds.exactCenterX()
-    }
-
-    fun exactCenterY(): Float {
-        return drawBounds.exactCenterY()
-    }
 }

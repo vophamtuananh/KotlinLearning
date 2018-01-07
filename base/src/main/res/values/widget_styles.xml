@@ -29,4 +29,8 @@
         <attr name="indicatorColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="LoadMoreRecyclerView">
+        <attr name="number_to_load_more" format="integer" />
+    </declare-styleable>
+
 </resources>
