@@ -10,7 +10,7 @@ import com.vophamtuananh.base.databinding.DialogLoadingBinding
  */
 class LoadingDialog(context: Context) : BaseDialog<DialogLoadingBinding>(context) {
 
-    private var mOnLoadingDilogListener : OnLoadingDialogListener? = null
+    private var mOnLoadingDialogListener : OnLoadingDialogListener? = null
 
     override fun getLayoutId(): Int {
         return R.layout.dialog_loading
@@ -22,13 +22,13 @@ class LoadingDialog(context: Context) : BaseDialog<DialogLoadingBinding>(context
     }
 
     override fun dismiss() {
-        if (mOnLoadingDilogListener != null)
-            mOnLoadingDilogListener!!.onDismissed()
+        if (mOnLoadingDialogListener != null)
+            mOnLoadingDialogListener!!.onDismissed()
         super.dismiss()
     }
 
     fun showWithListener(onLoadingDialogListener: OnLoadingDialogListener? = null) {
-        mOnLoadingDilogListener = onLoadingDialogListener
+        mOnLoadingDialogListener = onLoadingDialogListener
         show()
     }
 

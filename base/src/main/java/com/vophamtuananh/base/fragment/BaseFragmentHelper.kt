@@ -6,7 +6,7 @@ import java.util.*
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: FragmentProvider<T>,
+open class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: FragmentProvider<T>,
                                                     onChangedFragmentListener: OnChangedFragmentListener,
                                                     shouldShowPosition: Int) {
 
@@ -37,7 +37,7 @@ class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: FragmentPr
         }
 
         val fragment = mPageList!![mPageIndex].peek()
-        if (fragment.isAdded || fragment.isDetached) {
+        if (fragment.isAdded || fragment.isDetached || fragment.isHidden) {
             this.showFragment(mPageIndex)
         } else {
             if (mOnChangedFragmentListener != null)
@@ -133,12 +133,20 @@ class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: FragmentPr
         hideFragment.setCurrentScreen(false)
         mPageIndex = index
 
-        if (showFragment.isDetached || showFragment.isAdded) {
-            transaction.attach(showFragment)
+        if (showFragment.isAdded) {
+            if (showFragment.isDetached)
+                transaction.attach(showFragment)
+            else if (showFragment.isHidden)
+                transaction.show(showFragment)
         } else {
             transaction.add(mLayoutId, showFragment)
         }
-        transaction.detach(hideFragment)
+
+        if (hideFragment.isShouldSave())
+            transaction.hide(hideFragment)
+        else
+            transaction.detach(hideFragment)
+
         transaction.commitAllowingStateLoss()
         if (mOnChangedFragmentListener != null)
             mOnChangedFragmentListener!!.onChangedFragment(showFragment)

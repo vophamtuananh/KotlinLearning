@@ -17,7 +17,7 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
     private var mDescription: String? = null
     private var mYesButtonText: String? = null
     private var mNoButtonText: String? = null
-    private var mConfirmType = ConfirmType.WARINING
+    private var mConfirmType = ConfirmType.WARNING
     private var mTag: String? = null
     
     override fun getLayoutId(): Int {
@@ -102,7 +102,7 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
 
     fun show(onYesListener: OnYesListener? = null, onNoListener: OnNoListener? = null,
              title: String? = null, description: String = "",
-             confirmType: ConfirmType = ConfirmType.WARINING, yesText: String = context.getString(R.string.yes),
+             confirmType: ConfirmType = ConfirmType.WARNING, yesText: String = context.getString(R.string.yes),
              noText: String = context.getString(R.string.yes), tag: String? = null, cancelable: Boolean = true) {
         mOnYesListener = onYesListener
         mOnNoListener = onNoListener
@@ -125,6 +125,6 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
     }
 
     enum class ConfirmType {
-        SUCCESS, ERROR, WARINING
+        SUCCESS, ERROR, WARNING
     }
 }

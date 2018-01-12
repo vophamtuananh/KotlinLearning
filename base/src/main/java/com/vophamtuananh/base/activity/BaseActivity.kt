@@ -31,8 +31,6 @@ import com.vophamtuananh.base.utils.DeviceUtil.Companion.PERMISSION_WRITE_STORAG
 import com.vophamtuananh.base.utils.FileUtil
 import com.vophamtuananh.base.viewmodel.ActivityViewModel
 import com.vophamtuananh.base.viewmodel.CommonView
-import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 
 /**
  * Created by vophamtuananh on 1/7/18.
@@ -61,36 +59,12 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         if (getViewModelClass() != null)
             mViewModel = ViewModelProviders.of(this).get(getViewModelClass()!!)
-        if (mViewModel != null) {
-            val bindingMethods : Array<Method>? = mViewDataBinding!!.javaClass.declaredMethods
-            if (bindingMethods != null && bindingMethods.isNotEmpty()) {
-                for (method in bindingMethods) {
-                    if (method.returnType == Void.TYPE) {
-                        val parameterTypes = method.parameterTypes
-                        if (parameterTypes != null && parameterTypes.size == 1) {
-                            val clazz = parameterTypes[0]
-                            try {
-                                if (clazz.isInstance(mViewModel)) {
-                                    method.isAccessible = true
-                                    method.invoke(mViewDataBinding, mViewModel)
-                                    break
-                                }
-                            } catch (e: InvocationTargetException) {
-                                e.printStackTrace()
-                            } catch (e: IllegalAccessException) {
-                                e.printStackTrace()
-                            }
-
-                        }
-                    }
-                }
-            }
-            mViewModel!!.onCreated(this)
-        }
+        if (mViewModel != null)
+            mViewModel!!.onAttached(this)
+        super.onCreate(savedInstanceState)
+        mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
     }
 
     override fun onPause() {
@@ -205,8 +179,8 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
     fun openCamera() {
         val tempFile = FileUtil.getOutputMediaFile(applicationContext)
         if (tempFile != null) {
-            mCapturedPath = tempFile!!.getAbsolutePath()
-            DeviceUtil.openCamera(this, tempFile!!)
+            mCapturedPath = tempFile.absolutePath
+            DeviceUtil.openCamera(this, tempFile)
         }
     }
 
@@ -240,22 +214,19 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
 
     protected fun onRejectedWriteExternalPermission() {}
 
-    @JvmOverloads
     fun showLoadingDialog(onLoadingDilogListener: LoadingDialog.OnLoadingDialogListener? = null) {
-        if (mLoadingDialog == null) {
+        if (mLoadingDialog == null)
             mLoadingDialog = LoadingDialog(this)
-        }
-        if (mLoadingDialog!!.isShowing) {
+
+        if (mLoadingDialog!!.isShowing)
             return
-        }
 
         mLoadingDialog!!.showWithListener(onLoadingDilogListener)
     }
 
     fun hideLoadingDialog() {
-        if (mLoadingDialog != null && mLoadingDialog!!.isShowing()) {
+        if (mLoadingDialog != null && mLoadingDialog!!.isShowing)
             mLoadingDialog!!.dismiss()
-        }
     }
 
     fun getInformDialog(): InformDialog {

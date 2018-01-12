@@ -23,11 +23,15 @@ open class ActivityViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
         return mViewWeakReference!!.get()
     }
 
-    fun onCreated(view: V) {
+    fun onAttached(view: V) {
         mViewWeakReference = WeakReference(view)
+        view.lifecycle.addObserver(this)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreated() {
         if (compositeDisposables == null)
             compositeDisposables = CompositeDisposable()
-        view.lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -36,8 +40,6 @@ open class ActivityViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun pause() {
-        if (compositeDisposables != null)
-            compositeDisposables!!.clear()
     }
 
 

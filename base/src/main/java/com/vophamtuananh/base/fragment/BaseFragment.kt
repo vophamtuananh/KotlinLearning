@@ -18,7 +18,6 @@ import com.vophamtuananh.base.R
 import com.vophamtuananh.base.activity.BaseActivity
 import com.vophamtuananh.base.viewmodel.CommonView
 import com.vophamtuananh.base.viewmodel.FragmentViewModel
-import java.lang.reflect.InvocationTargetException
 
 /**
  * Created by vophamtuananh on 1/7/18.
@@ -29,10 +28,9 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
 
     protected var mViewModel: VM? = null
 
-    private val mShouldSave = true
     private var mIsInLeft: Boolean = false
     private var mIsOutLeft: Boolean = false
-    protected var mIsCurrentScreen: Boolean = false
+    private var mIsCurrentScreen: Boolean = false
     private var mIsPush: Boolean = false
 
     private var mInitialized = true
@@ -52,9 +50,8 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
         super.onAttach(context)
         if (getViewModelClass() != null)
             mViewModel = ViewModelProviders.of(this).get(getViewModelClass()!!)
-        if (mViewModel != null) {
+        if (mViewModel != null)
             mViewModel!!.onAttach(this)
-        }
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
@@ -64,10 +61,10 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
             val pushEnter = getPushEnterAnimId()
             val pushExit = getPushExitAnimId()
             val popEnter = getPopEnterAnimId()
-            animation = if (mIsPush)
-                AnimationUtils.loadAnimation(context, if (enter) pushEnter else pushExit)
+            if (mIsPush)
+                animation = AnimationUtils.loadAnimation(context, if (enter) pushEnter else pushExit)
             else
-                AnimationUtils.loadAnimation(context, if (enter) popEnter else popExit)
+                animation = AnimationUtils.loadAnimation(context, if (enter) popEnter else popExit)
         } else {
             if (enter) {
                 val left = getLeftInAnimId()
@@ -112,31 +109,6 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        if (mViewModel != null) {
-            val bindingMethods = mViewDataBinding!!.javaClass.declaredMethods
-            if (bindingMethods != null && bindingMethods.isNotEmpty()) {
-                for (method in bindingMethods) {
-                    if (method.returnType == Void.TYPE) {
-                        val parameterTypes = method.parameterTypes
-                        if (parameterTypes != null && parameterTypes.size == 1) {
-                            val clazz = parameterTypes[0]
-                            try {
-                                if (clazz.isInstance(mViewModel)) {
-                                    method.isAccessible = true
-                                    method.invoke(mViewDataBinding, mViewModel)
-                                    break
-                                }
-                            } catch (e: InvocationTargetException) {
-                                e.printStackTrace()
-                            } catch (e: IllegalAccessException) {
-                                e.printStackTrace()
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
         return mViewDataBinding!!.root
     }
 
@@ -213,7 +185,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
     }
 
     fun isShouldSave(): Boolean {
-        return mShouldSave
+        return true
     }
 
     protected fun onVisible() {}
@@ -222,9 +194,9 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
 
     protected fun onInVisible() {}
 
-    fun onCapturedImage(path: String) {}
+    protected fun onCapturedImage(path: String) {}
 
-    fun onChoseImage(uri: Uri) {}
+    protected fun onChoseImage(uri: Uri) {}
 
     protected fun getPushExitAnimId(): Int {
         return R.anim.push_exit
