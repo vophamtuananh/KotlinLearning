@@ -2,6 +2,7 @@ package com.vophamtuananh.base.dialog
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import com.vophamtuananh.base.R
 import com.vophamtuananh.base.databinding.DialogLoadingBinding
 
@@ -19,6 +20,16 @@ class LoadingDialog(context: Context) : BaseDialog<DialogLoadingBinding>(context
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setCancelable(false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mViewDataBinding!!.lvLoading.visibility = View.VISIBLE
+    }
+
+    override fun onStop() {
+        mViewDataBinding!!.lvLoading.visibility = View.INVISIBLE
+        super.onStop()
     }
 
     override fun dismiss() {

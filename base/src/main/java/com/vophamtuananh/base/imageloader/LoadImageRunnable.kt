@@ -10,7 +10,8 @@ import java.net.URL
 /**
  * Created by vophamtuananh on 1/12/18.
  */
-class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformationKeeper, loadCallback: LoadCallback): Runnable {
+class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformationKeeper,
+                        loadCallback: (loadInformationKeeper: LoadInformationKeeper, bitmap: Bitmap?) -> Unit): Runnable {
 
     companion object {
         private val mSyncObject = Any()
@@ -18,9 +19,9 @@ class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformation
         private var mFileCacher: FileCacher? = null
     }
 
-    private var mLoadCallback: LoadCallback? = null
+    private val mLoadCallback = loadCallback
 
-    private var mLoadInformationKeeper: LoadInformationKeeper? = null
+    private val mLoadInformationKeeper = loadInformationKeeper
 
     init {
         if (mFileCacher == null) {
@@ -30,14 +31,12 @@ class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformation
                 }
             }
         }
-        mLoadCallback = loadCallback
-        mLoadInformationKeeper = loadInformationKeeper
     }
 
     override fun run() {
-        val bitmap = getBitmap(mLoadInformationKeeper!!)
+        val bitmap = getBitmap(mLoadInformationKeeper)
 
-        mLoadCallback!!.completed(mLoadInformationKeeper!!, bitmap)
+        mLoadCallback(mLoadInformationKeeper, bitmap)
     }
 
     private fun getBitmap(loadInformationKeeper: LoadInformationKeeper): Bitmap? {

@@ -1,14 +1,12 @@
 package com.vophamtuananh.base.utils
 
-import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.media.ExifInterface
-import android.media.ThumbnailUtils
 import android.net.Uri
 import android.provider.MediaStore
+import android.support.media.ExifInterface
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -20,6 +18,7 @@ import java.io.IOException
 class BitmapUtil {
 
     companion object {
+
         fun saveBitmapToFile(bitmap: Bitmap?, file: File?, compressFormat: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG) {
             if (file == null)
                 return
@@ -53,11 +52,11 @@ class BitmapUtil {
         fun getBitmapFromFile(file: File, bitmapConfig: Bitmap.Config): Bitmap? {
             val opts = BitmapFactory.Options()
             opts.inPreferredConfig = bitmapConfig
-            val bitmap = BitmapFactory.decodeFile(file.absolutePath, opts)
-            return rotationBitmap(file.absolutePath, bitmap)
+            val bitmap: Bitmap? = BitmapFactory.decodeFile(file.absolutePath, opts) ?: return null
+            return rotationBitmap(file.absolutePath, bitmap!!)
         }
 
-        private fun rotationBitmap(filePath: String?, bm: Bitmap): Bitmap? {
+        private fun rotationBitmap(filePath: String, bm: Bitmap): Bitmap {
             var exif: ExifInterface? = null
             try {
                 exif = ExifInterface(filePath)
@@ -71,30 +70,32 @@ class BitmapUtil {
 
             val orientation = if (orientString != null) Integer.parseInt(orientString) else ExifInterface.ORIENTATION_NORMAL
 
-            val rotatedBitmap: Bitmap
             if (orientation != ExifInterface.ORIENTATION_NORMAL) {
-                var rotationAngle = 0
+                val rotationAngle = when(orientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90     -> 90
+                    ExifInterface.ORIENTATION_ROTATE_180    -> 180
+                    ExifInterface.ORIENTATION_ROTATE_270    -> 270
+                    else                                    -> 0
+                }
 
-                if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90
-                if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180
-                if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270
+                if (rotationAngle == 0)
+                    return bm
 
-                rotatedBitmap = rotationBitmap(bm, rotationAngle)
-            } else {
-                rotatedBitmap = bm
+                return rotationBitmap(bm, rotationAngle)
             }
-            return rotatedBitmap
+            return bm
         }
 
-        fun rotationBitmap(bitmap: Bitmap, orientation: Int): Bitmap {
+        private fun rotationBitmap(bitmap: Bitmap, orientation: Int): Bitmap {
             val matrix = Matrix()
             matrix.setRotate(orientation.toFloat(), bitmap.width.toFloat() / 2, bitmap.height.toFloat() / 2)
             return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
         }
 
         fun decodeBitmapFromUri(context: Context, uri: Uri,
-                                reqWidth: Int, reqHeight: Int, bitmapConfig: Bitmap.Config = Bitmap.Config.RGB_565): Bitmap? {
-            var bitmap: Bitmap?
+                                reqWidth: Int = 0, reqHeight: Int = 0,
+                                bitmapConfig: Bitmap.Config = Bitmap.Config.RGB_565): Bitmap? {
+            var bitmap: Bitmap? = null
             val path: String?
             try {
                 path = FileUtil.getRealPathFromURI(context, uri)
@@ -105,22 +106,17 @@ class BitmapUtil {
                     bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
                     bitmap = scaleBitmap(bitmap, reqWidth, reqHeight)
                 }
-
-                if (bitmap != null) {
-                    val rotatedBitmap = rotationBitmap(path, bitmap)
-                    if (rotatedBitmap != null) {
-                        bitmap = rotatedBitmap
-                    }
-                }
+                if (bitmap == null)
+                    return null
+                return rotationBitmap(path!!, bitmap)
             } catch (ex: Exception) {
-                bitmap = null
                 ex.printStackTrace()
             }
 
             return bitmap
         }
 
-        fun decodeBitmapFromExitPath(path: String, reqWidth: Int = 0, reqHeight: Int = 0, bitmapConfig: Bitmap.Config = Bitmap.Config.RGB_565): Bitmap {
+        private fun decodeBitmapFromExitPath(path: String, reqWidth: Int = 0, reqHeight: Int = 0, bitmapConfig: Bitmap.Config = Bitmap.Config.RGB_565): Bitmap? {
             val opts = BitmapFactory.Options()
             opts.inJustDecodeBounds = true
             opts.inPreferredConfig = bitmapConfig
@@ -130,19 +126,19 @@ class BitmapUtil {
             return BitmapFactory.decodeFile(path, opts)
         }
 
-        fun scaleBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
-            var width_tmp = bitmap.width
-            var height_tmp = bitmap.height
+        private fun scaleBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
+            var widthTmp = bitmap.width
+            var heightTmp = bitmap.height
             if (width != 0 && height != 0) {
 
                 while (true) {
-                    if (width_tmp < width || height_tmp < height)
+                    if (widthTmp < width || heightTmp < height)
                         break
-                    width_tmp /= 2
-                    height_tmp /= 2
+                    widthTmp /= 2
+                    heightTmp /= 2
                 }
             }
-            return Bitmap.createScaledBitmap(bitmap, width_tmp, height_tmp, false)
+            return Bitmap.createScaledBitmap(bitmap, widthTmp, heightTmp, false)
         }
 
         private fun calculateInSampleSize(option: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
@@ -163,11 +159,5 @@ class BitmapUtil {
                 stretchWidth
         }
 
-        fun getThumnailFromPath(cr: ContentResolver, path: String): Bitmap {
-            val THUMBSIZE = 128
-
-            return ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(path),
-                    THUMBSIZE, THUMBSIZE)
-        }
     }
 }

@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     def androidVersions = rootProject.ext.android
 
@@ -40,6 +42,10 @@ android {
 
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -47,19 +53,21 @@ dependencies {
 
     // Kotlin
     implementation commonDependencies.kotlin
+    kapt commonDependencies.kotlinBindingCompiler
 
     // Android
     api commonDependencies.supportAppCompatV7
     api commonDependencies.supportRecyclerView
     api commonDependencies.constraintLayout
     api commonDependencies.supportDesign
+    api commonDependencies.exifinterface
 
     // Architecture Components
     api commonDependencies.archLifecycleExtensions
 
     // Dagger 2
     api commonDependencies.dagger2
-    annotationProcessor commonDependencies.dagger2Compiler
+    kapt commonDependencies.dagger2Compiler
 
     // Rx
     api commonDependencies.rxJava2

@@ -7,5 +7,5 @@ import android.graphics.drawable.BitmapDrawable
  */
 interface BitmapCallback {
 
-    fun onCallBack(bitmapDrawable: BitmapDrawable);
+    fun onCallBack(bitmapDrawable: BitmapDrawable)
 }

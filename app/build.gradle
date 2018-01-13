@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -13,6 +15,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled true
     }
 
     buildTypes {
@@ -31,12 +37,11 @@ dependencies {
 
     // Kotlin
     implementation commonDependencies.kotlin
+    kapt commonDependencies.kotlinBindingCompiler
 
-    // Android
-    api commonDependencies.supportAppCompatV7
-    api commonDependencies.supportRecyclerView
-    api commonDependencies.constraintLayout
-    api commonDependencies.supportDesign
+    // Dagger 2
+    api commonDependencies.dagger2
+    kapt commonDependencies.dagger2Compiler
 
     // Testing
     testImplementation commonTestDependencies.junit

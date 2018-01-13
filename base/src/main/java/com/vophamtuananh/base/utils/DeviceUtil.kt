@@ -74,12 +74,11 @@ class DeviceUtil {
         }
 
         private fun camera(activity: Activity, tempFile: File) {
-            val capturedFileUri: Uri
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                capturedFileUri = FileProvider.getUriForFile(activity,
+            val capturedFileUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(activity,
                         activity.applicationContext.packageName + ".provider", tempFile)
             } else {
-                capturedFileUri = Uri.fromFile(tempFile)
+                Uri.fromFile(tempFile)
             }
             val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             if (takePhotoIntent.resolveActivity(activity.packageManager) != null) {

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by vophamtuananh on 1/12/18.
  */
-class ImageLoader(context: Context) {
+open class ImageLoader(context: Context) {
 
     companion object {
         private const val CORE_POOL_SIZE = 5
@@ -103,18 +103,18 @@ class ImageLoader(context: Context) {
             return
         }
 
-        executorService!!.submit(LoadImageRunnable(c, informationKeeper, object : LoadCallback {
-            override fun completed(loadInformationKeeper: LoadInformationKeeper, bitmap: Bitmap?) {
-                val context = mContextWeakReference.get()
-                if (context == null) {
-                    val fileName = loadInformationKeeper.url!!.hashCode().toString()
-                    mFileSynchronizer.unRegisterProcess(fileName)
-                    handler.post { notifyWaitingKeepers(); }
-                    return
-                }
-                preDisplaying(context, bitmap, loadInformationKeeper)
-            }
-        }))
+        executorService!!.submit(LoadImageRunnable(c, informationKeeper, this::loadCompletedCallback))
+    }
+
+    private fun loadCompletedCallback(loadInformationKeeper: LoadInformationKeeper, bitmap: Bitmap?) {
+        val context = mContextWeakReference!!.get()
+        if (context == null) {
+            val fileName = loadInformationKeeper.url!!.hashCode().toString()
+            mFileSynchronizer.unRegisterProcess(fileName)
+            handler.post { notifyWaitingKeepers(); }
+            return
+        }
+        preDisplaying(context, bitmap, loadInformationKeeper)
     }
 
     protected fun reprocessBitmap(bitmap: Bitmap): Bitmap {

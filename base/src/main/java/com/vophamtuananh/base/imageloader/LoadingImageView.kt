@@ -17,7 +17,7 @@ class LoadingImageView : AppCompatImageView, ILoadingImageView {
         private const val FADE_IN_TIME = 400
     }
 
-    private var TRANSPARENT_COLOR: Int = 0
+    private var transparentColor: Int = 0
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -26,7 +26,7 @@ class LoadingImageView : AppCompatImageView, ILoadingImageView {
     }
 
     private fun init(context: Context) {
-        TRANSPARENT_COLOR = ContextCompat.getColor(context, android.R.color.transparent)
+        transparentColor = ContextCompat.getColor(context, android.R.color.transparent)
     }
 
     override fun setResourceId(resourceId: Int) {
@@ -34,7 +34,7 @@ class LoadingImageView : AppCompatImageView, ILoadingImageView {
     }
 
     override fun setDrawable(drawable: Drawable) {
-        val transitionDrawable = TransitionDrawable(arrayOf(ColorDrawable(TRANSPARENT_COLOR), drawable))
+        val transitionDrawable = TransitionDrawable(arrayOf(ColorDrawable(transparentColor), drawable))
         setImageDrawable(transitionDrawable)
         transitionDrawable.startTransition(FADE_IN_TIME)
     }

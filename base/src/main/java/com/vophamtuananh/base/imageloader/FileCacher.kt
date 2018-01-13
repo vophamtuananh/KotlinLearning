@@ -88,15 +88,10 @@ class FileCacher(context: Context) {
     @Synchronized private fun cleanDir(dir: File, bytes: Long) {
         var bytesDeleted: Long = 0
         val files = dir.listFiles()
-        if (files != null) {
-            for (file in files) {
-                bytesDeleted += file.length()
-                file.delete()
-
-                if (bytesDeleted >= bytes) {
-                    break
-                }
-            }
+        files?.forEach {
+            bytesDeleted += it.length()
+            it.delete()
+            if (bytesDeleted >= bytes) return
         }
         size -= bytesDeleted
     }
@@ -104,9 +99,6 @@ class FileCacher(context: Context) {
     private fun getDirSize(dir: File): Long {
         var size: Long = 0
         val files = dir.listFiles()
-        files?.filter(predicate = {
-            it.isFile
-        })
         files?.filter { it.isFile }?.forEach { size += it.length() }
         return size
     }

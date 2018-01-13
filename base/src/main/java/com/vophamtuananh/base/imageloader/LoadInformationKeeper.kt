@@ -23,11 +23,7 @@ class LoadInformationKeeper {
     }
 
     class Builder {
-        private var loadInformationKeeper: LoadInformationKeeper
-
-        init {
-            loadInformationKeeper = LoadInformationKeeper()
-        }
+        private var loadInformationKeeper: LoadInformationKeeper = LoadInformationKeeper()
 
         internal fun url(url: String) {
             loadInformationKeeper.url = url
