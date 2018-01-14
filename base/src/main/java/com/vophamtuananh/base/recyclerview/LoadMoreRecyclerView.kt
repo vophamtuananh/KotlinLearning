@@ -1,4 +1,4 @@
-package com.vophamtuananh.base.widgets.loadmorerecyclerview
+package com.vophamtuananh.base.recyclerview
 
 import android.content.Context
 import android.support.v7.widget.GridLayoutManager
@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.vophamtuananh.base.R
 import com.vophamtuananh.base.databinding.ItemLoadMoreBinding
-import com.vophamtuananh.base.recyclerview.RecyclerAdapter
 
 /**
  * Created by vophamtuananh on 1/7/18.
