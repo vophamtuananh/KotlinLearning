@@ -6,9 +6,9 @@ import java.util.*
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-open class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: FragmentProvider<T>,
-                                                    onChangedFragmentListener: OnChangedFragmentListener,
-                                                    shouldShowPosition: Int) {
+open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedFragmentListener: OnChangedFragmentListener? = null,
+                                                         fragmentProvider: FragmentProvider<T>,
+                                                         shouldShowPosition: Int) {
 
     private var mPageList: ArrayList<Stack<T>>? = null
     private var mPageIndex: Int = 0
@@ -17,13 +17,10 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: Fragm
 
     private val mBuildFragments: Array<T>
 
-    private var mOnChangedFragmentListener: OnChangedFragmentListener? = null
-
     init {
         mLayoutId = fragmentProvider.getContentLayoutId()
-        this.mFragmentManager = fragmentProvider.fragmentManager()
-        this.mBuildFragments = fragmentProvider.getFragments()
-        mOnChangedFragmentListener = onChangedFragmentListener
+        mFragmentManager = fragmentProvider.fragmentManager()
+        mBuildFragments = fragmentProvider.getFragments()
         initFragments(mBuildFragments, shouldShowPosition)
     }
 
@@ -38,7 +35,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: Fragm
 
         val fragment = mPageList!![mPageIndex].peek()
         if (fragment.isAdded || fragment.isDetached || fragment.isHidden) {
-            this.showFragment(mPageIndex)
+            showFragment(mPageIndex)
         } else {
             if (mOnChangedFragmentListener != null)
                 mOnChangedFragmentListener!!.onChangedFragment(fragment)
@@ -46,7 +43,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(fragmentProvider: Fragm
             transaction.add(mLayoutId, fragment)
             transaction.commitAllowingStateLoss()
         }
-        this.showFragment(shouldShowPosition)
+        showFragment(shouldShowPosition)
     }
 
     fun pushFragment(fragment: T) {
