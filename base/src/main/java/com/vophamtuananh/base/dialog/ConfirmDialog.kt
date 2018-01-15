@@ -94,7 +94,7 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
                 iconId = R.drawable.ic_warning
             }
         }
-        mViewDataBinding!!.llParent.setBackgroundResource(backgroundParentId)
+        mViewDataBinding!!.clParent.setBackgroundResource(backgroundParentId)
         mViewDataBinding!!.btnYes.setBackgroundResource(backgroundYestId)
         mViewDataBinding!!.btnNo.setBackgroundResource(backgroundNoId)
         mViewDataBinding!!.ivIcon.setImageResource(iconId)

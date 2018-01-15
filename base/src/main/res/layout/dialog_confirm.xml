@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="event"
-            type="com.vophamtuananh.base.dialog.ConfirmDialog"/>
+            type="com.vophamtuananh.base.dialog.ConfirmDialog" />
     </data>
 
     <FrameLayout
@@ -13,102 +15,131 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent">
 
-        <com.vophamtuananh.base.widgets.PercentLinearLayout
-            android:id="@+id/ll_parent"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:pll_percent="80"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:background="@drawable/bg_warning"
-            android:orientation="vertical">
+            android:layout_gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/positive_8dp"
-                android:paddingEnd="@dimen/positive_8dp"
-                android:paddingTop="@dimen/positive_6dp"
-                android:paddingBottom="@dimen/positive_4dp" >
+                android:background="@drawable/bg_warning"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_2"
+                app:layout_constraintStart_toEndOf="@+id/guideline_1"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_icon"
                     android:layout_width="@dimen/positive_25dp"
-                    android:layout_height="@dimen/positive_25dp"/>
+                    android:layout_height="@dimen/positive_25dp"
+                    android:layout_marginStart="@dimen/positive_8dp"
+                    android:layout_marginTop="@dimen/positive_6dp"
+                    android:layout_marginBottom="@dimen/positive_6dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/cl_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:src="@drawable/ic_warning" />
 
                 <com.vophamtuananh.base.widgets.CustomFontTextView
                     android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/positive_7dp"
-                    android:gravity="center"
-                    android:textSize="@dimen/text_size_16sp"
+                    android:layout_marginStart="@dimen/positive_6dp"
+                    android:layout_marginTop="@dimen/positive_6dp"
+                    android:layout_marginBottom="@dimen/positive_6dp"
+                    android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/colorWhite"
-                    android:ellipsize="end"/>
+                    android:textSize="@dimen/text_size_16sp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/cl_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Warning" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_white_corner"
-                android:layout_margin="@dimen/positive_2dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <com.vophamtuananh.base.widgets.CustomFontTextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="wrap_content"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/positive_10dp"
-                    android:layout_marginEnd="@dimen/positive_10dp"
-                    android:layout_marginTop="@dimen/positive_15dp"
-                    android:layout_marginBottom="@dimen/positive_11dp"
-                    android:textSize="@dimen/text_size_12sp"
-                    android:textColor="@color/text_color"/>
+                    android:layout_margin="@dimen/positive_2dp"
+                    android:background="@drawable/bg_white_corner"
+                    android:padding="@dimen/positive_2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/positive_4dp"
-                    android:orientation="horizontal">
+                    <com.vophamtuananh.base.widgets.CustomFontTextView
+                        android:id="@+id/tv_description"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/positive_10dp"
+                        android:layout_marginEnd="@dimen/positive_10dp"
+                        android:layout_marginTop="@dimen/positive_15dp"
+                        android:layout_marginBottom="@dimen/positive_15dp"
+                        android:gravity="center"
+                        android:textSize="@dimen/text_size_12sp"
+                        android:textColor="@color/text_color"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/btn_yes"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Do you want to log out?" />
 
                     <com.vophamtuananh.base.widgets.AnimButton
                         android:id="@+id/btn_yes"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_success"
-                        android:paddingTop="@dimen/positive_8dp"
-                        android:paddingBottom="@dimen/positive_8dp"
                         android:layout_marginEnd="@dimen/positive_2dp"
+                        android:background="@drawable/bg_success"
+                        android:gravity="center"
+                        android:onClick="@{() -> event.onYesCliked()}"
+                        android:paddingBottom="@dimen/positive_8dp"
+                        android:paddingTop="@dimen/positive_8dp"
                         android:text="@string/yes"
                         android:textColor="@color/colorWhite"
-                        android:gravity="center"
                         android:textSize="@dimen/text_size_12sp"
-                        android:onClick="@{() -> event.onYesCliked()}"/>
-
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/btn_no"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <com.vophamtuananh.base.widgets.AnimButton
                         android:id="@+id/btn_no"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_warning"
-                        android:paddingTop="@dimen/positive_8dp"
-                        android:paddingBottom="@dimen/positive_8dp"
+                        android:layout_height="0dp"
                         android:layout_marginStart="@dimen/positive_2dp"
+                        android:background="@drawable/bg_warning"
+                        android:gravity="center"
+                        android:onClick="@{() -> event.onNoCliked()}"
                         android:text="@string/cancel"
                         android:textColor="@color/colorWhite"
-                        android:gravity="center"
                         android:textSize="@dimen/text_size_12sp"
-                        android:onClick="@{() -> event.onNoCliked()}"/>
-                </LinearLayout>
-            </LinearLayout>
-        </com.vophamtuananh.base.widgets.PercentLinearLayout>
+                        app:layout_constraintBottom_toBottomOf="@+id/btn_yes"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/btn_yes"
+                        app:layout_constraintTop_toTopOf="@+id/btn_yes" />
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
+
+        </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 
 </layout>

@@ -78,7 +78,7 @@ class InformDialog(context: Context) : BaseDialog<DialogInformBinding>(context) 
                 iconId = R.drawable.ic_error
             }
         }
-        mViewDataBinding!!.llParent.setBackgroundResource(backgroundId)
+        mViewDataBinding!!.clParent.setBackgroundResource(backgroundId)
         mViewDataBinding!!.btnOk.setBackgroundResource(backgroundId)
         mViewDataBinding!!.ivIcon.setImageResource(iconId)
     }
