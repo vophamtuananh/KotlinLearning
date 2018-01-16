@@ -18,16 +18,16 @@ class AnimButton : AppCompatButton {
         private val DEFAULT_TYPE_FONT = "fonts/AbhayaLibre-Medium.ttf"
     }
 
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : this(context, null)
 
-    constructor(context: Context, attrs: AttributeSet) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) :
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr) {
 
         val a: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.AnimButton, defStyleAttr, 0)
 
-        var typeFont: String = a.getString(R.styleable.AnimButton_ab_font)
+        var typeFont: String? = a.getString(R.styleable.AnimButton_ab_font)
         if (TextUtils.isEmpty(typeFont))
             typeFont = DEFAULT_TYPE_FONT
 

@@ -1,13 +1,21 @@
 package vophamtuananh.com.kotlinlearning
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.vophamtuananh.base.activity.BaseActivity
+import com.vophamtuananh.base.viewmodel.ActivityViewModel
+import com.vophamtuananh.base.viewmodel.CommonView
+import vophamtuananh.com.kotlinlearning.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding, ActivityViewModel<CommonView>>() {
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_main
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        mViewDataBinding!!.tvHello.setOnClickListener {
+            showError(Throwable("I Don't Know"))
+        }
     }
 }

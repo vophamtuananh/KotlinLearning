@@ -167,7 +167,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
 
     override fun showError(throwable: Throwable) {
         mInformDialog = getInformDialog()
-        if (mInformDialog!!.isShowing) {
+        if (!mInformDialog!!.isShowing) {
             var msg = throwable.message
             if (TextUtils.isEmpty(msg)) {
                 msg = getString(R.string.unknown_error)

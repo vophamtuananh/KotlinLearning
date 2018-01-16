@@ -26,7 +26,7 @@ class CustomFontTextView : AppCompatTextView {
 
         val a: TypedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomFontTextView, defStyleAttr, 0)
 
-        var typeFont = a.getString(R.styleable.CustomFontTextView_cftv_font)
+        var typeFont: String? = a.getString(R.styleable.CustomFontTextView_cftv_font)
         if (TextUtils.isEmpty(typeFont))
             typeFont = DEFAULT_TYPE_FONT
 
