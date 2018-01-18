@@ -61,8 +61,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
     override fun onCreate(savedInstanceState: Bundle?) {
         if (getViewModelClass() != null)
             mViewModel = ViewModelProviders.of(this).get(getViewModelClass()!!)
-        if (mViewModel != null)
-            mViewModel!!.onAttached(this)
+        mViewModel?.onAttached(this)
         super.onCreate(savedInstanceState)
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
     }
@@ -70,23 +69,21 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
     override fun onPause() {
         super.onPause()
         if (mLoadingDialog != null && mLoadingDialog!!.isShowing)
-            mLoadingDialog!!.dismiss()
+            mLoadingDialog?.dismiss()
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (mViewModel != null)
-            mViewModel!!.onSaveInstanceState(outState)
+        mViewModel?.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        if (mViewModel != null)
-            mViewModel!!.onRestoreInstanceState(savedInstanceState)
+        mViewModel?.onRestoreInstanceState(savedInstanceState)
         super.onRestoreInstanceState(savedInstanceState)
     }
 
     override fun onDestroy() {
-        mViewDataBinding!!.unbind()
+        mViewDataBinding?.unbind()
         super.onDestroy()
     }
 
@@ -172,7 +169,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
             if (TextUtils.isEmpty(msg)) {
                 msg = getString(R.string.unknown_error)
             }
-            mInformDialog!!.show(informType = InformDialog.InformType.WARNING, description = msg!!)
+            mInformDialog?.show(informType = InformDialog.InformType.WARNING, description = msg!!)
         }
     }
 
@@ -221,12 +218,12 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
         if (mLoadingDialog!!.isShowing)
             return
 
-        mLoadingDialog!!.showWithListener(onLoadingDilogListener)
+        mLoadingDialog?.showWithListener(onLoadingDilogListener)
     }
 
     fun hideLoadingDialog() {
         if (mLoadingDialog != null && mLoadingDialog!!.isShowing)
-            mLoadingDialog!!.dismiss()
+            mLoadingDialog?.dismiss()
     }
 
     fun getInformDialog(): InformDialog {

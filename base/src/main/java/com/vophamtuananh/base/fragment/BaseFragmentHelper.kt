@@ -37,8 +37,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
         if (fragment.isAdded || fragment.isDetached || fragment.isHidden) {
             showFragment(mPageIndex)
         } else {
-            if (mOnChangedFragmentListener != null)
-                mOnChangedFragmentListener!!.onChangedFragment(fragment)
+            mOnChangedFragmentListener?.onChangedFragment(fragment)
             val transaction = mFragmentManager.beginTransaction()
             transaction.add(mLayoutId, fragment)
             transaction.commitAllowingStateLoss()
@@ -53,8 +52,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
 
         val hideFragment = currentStack.peek()
         currentStack.push(fragment)
-        if (mOnChangedFragmentListener != null)
-            mOnChangedFragmentListener!!.onChangedFragment(fragment)
+        mOnChangedFragmentListener?.onChangedFragment(fragment)
 
         fragment.setCurrentScreen(true)
         fragment.setPush(true)
@@ -97,8 +95,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
         }
         val showFragment = mPageList!![mPageIndex].peek()
 
-        if (mOnChangedFragmentListener != null)
-            mOnChangedFragmentListener!!.onChangedFragment(showFragment)
+        mOnChangedFragmentListener?.onChangedFragment(showFragment)
 
         showFragment.setCurrentScreen(true)
         showFragment.setPush(false)
@@ -145,8 +142,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
             transaction.detach(hideFragment)
 
         transaction.commitAllowingStateLoss()
-        if (mOnChangedFragmentListener != null)
-            mOnChangedFragmentListener!!.onChangedFragment(showFragment)
+        mOnChangedFragmentListener?.onChangedFragment(showFragment)
     }
 
     fun release() {

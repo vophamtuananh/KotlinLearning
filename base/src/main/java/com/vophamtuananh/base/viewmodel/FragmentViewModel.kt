@@ -18,8 +18,7 @@ open class FragmentViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
     private var compositeDisposables: CompositeDisposable? = null
 
     protected fun view(): V? {
-        if (mViewWeakReference == null) return null
-        return mViewWeakReference!!.get()
+        return mViewWeakReference?.get()
     }
 
     fun onAttach(view: V) {
@@ -51,19 +50,16 @@ open class FragmentViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY) internal fun onDestroy() {
-        if (mViewWeakReference != null) {
-            val view = mViewWeakReference!!.get()
-            view?.lifecycle?.removeObserver(this)
-        }
+        val view = mViewWeakReference?.get()
+        view?.lifecycle?.removeObserver(this)
     }
 
     override fun onCleared() {
         super.onCleared()
-        if (compositeDisposables != null)
-            compositeDisposables!!.dispose()
+        compositeDisposables?.dispose()
     }
 
     protected fun addDisposable(disposable: Disposable) {
-        compositeDisposables!!.add(disposable)
+        compositeDisposables?.add(disposable)
     }
 }

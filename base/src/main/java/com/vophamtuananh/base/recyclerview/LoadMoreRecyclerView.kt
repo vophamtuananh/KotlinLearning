@@ -64,9 +64,7 @@ class LoadMoreRecyclerView : RecyclerView {
             }
 
             if (!isLoading && totalItemCount <= lastVisibleItemPosition + mNumberToLoadMore) {
-                if (mOnLoadMoreListener != null) {
-                    mOnLoadMoreListener!!.onLoadMore()
-                }
+                mOnLoadMoreListener?.onLoadMore()
                 isLoading = true
             }
         }
@@ -110,9 +108,7 @@ class LoadMoreRecyclerView : RecyclerView {
 
     fun setNoMore(noMore: Boolean) {
         mNoMore = noMore
-        if (mAdapterWrapper != null) {
-            mAdapterWrapper!!.setNoMore(noMore)
-        }
+        mAdapterWrapper?.setNoMore(noMore)
     }
 
     fun setAdapter(adapter: RecyclerAdapter<RecyclerAdapter.BaseHolder<*, Any>, Any>) {

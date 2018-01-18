@@ -11,7 +11,7 @@ import com.vophamtuananh.base.databinding.DialogLoadingBinding
  */
 class LoadingDialog(context: Context) : BaseDialog<DialogLoadingBinding>(context) {
 
-    private var mOnLoadingDialogListener : OnLoadingDialogListener? = null
+    private var mOnLoadingDialogListener: OnLoadingDialogListener? = null
 
     override fun getLayoutId(): Int {
         return R.layout.dialog_loading
@@ -24,17 +24,16 @@ class LoadingDialog(context: Context) : BaseDialog<DialogLoadingBinding>(context
 
     override fun onStart() {
         super.onStart()
-        mViewDataBinding!!.lvLoading.visibility = View.VISIBLE
+        mViewDataBinding?.lvLoading?.visibility = View.VISIBLE
     }
 
     override fun onStop() {
-        mViewDataBinding!!.lvLoading.visibility = View.INVISIBLE
+        mViewDataBinding?.lvLoading?.visibility = View.INVISIBLE
         super.onStop()
     }
 
     override fun dismiss() {
-        if (mOnLoadingDialogListener != null)
-            mOnLoadingDialogListener!!.onDismissed()
+        mOnLoadingDialogListener?.onDismissed()
         super.dismiss()
     }
 

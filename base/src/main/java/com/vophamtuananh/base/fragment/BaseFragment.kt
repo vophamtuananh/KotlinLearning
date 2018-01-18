@@ -50,8 +50,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
         super.onAttach(context)
         if (getViewModelClass() != null)
             mViewModel = ViewModelProviders.of(this).get(getViewModelClass()!!)
-        if (mViewModel != null)
-            mViewModel!!.onAttach(this)
+            mViewModel?.onAttach(this)
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation {
@@ -98,7 +97,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
                     if (mViewDestroyed)
                         return
                     mWaitThread = WaitThread(this@BaseFragment)
-                    mWaitThread!!.start()
+                    mWaitThread?.start()
                 }
 
                 override fun onAnimationRepeat(animation: Animation) {}
@@ -109,7 +108,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        return mViewDataBinding!!.root
+        return mViewDataBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,17 +116,15 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
         onVisible()
         mViewCreated = true
         mViewDestroyed = false
-        if (mWaitThread != null)
-            mWaitThread!!.continueProcessing()
+            mWaitThread?.continueProcessing()
     }
 
     override fun onDestroyView() {
-        if (mWaitThread != null)
-            mWaitThread!!.stopProcessing()
+            mWaitThread?.stopProcessing()
         mViewDestroyed = true
         mViewCreated = false
         onInVisible()
-        mViewDataBinding!!.unbind()
+        mViewDataBinding?.unbind()
         super.onDestroyView()
     }
 

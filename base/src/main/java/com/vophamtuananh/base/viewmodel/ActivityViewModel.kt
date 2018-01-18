@@ -19,8 +19,7 @@ open class ActivityViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
     private var compositeDisposables: CompositeDisposable? = null
 
     protected fun view(): V? {
-        if (mViewWeakReference == null) return null
-        return mViewWeakReference!!.get()
+        return mViewWeakReference?.get()
     }
 
     fun onAttached(view: V) {
@@ -53,19 +52,16 @@ open class ActivityViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun cleanup() {
-        if (mViewWeakReference != null) {
-            val view = mViewWeakReference!!.get()
-            view?.lifecycle?.removeObserver(this)
-        }
+        val view = mViewWeakReference?.get()
+        view?.lifecycle?.removeObserver(this)
     }
 
     override fun onCleared() {
         super.onCleared()
-        if (compositeDisposables != null)
-            compositeDisposables!!.dispose()
+        compositeDisposables?.dispose()
     }
 
     fun addDisposable(disposable: Disposable) {
-        compositeDisposables!!.add(disposable)
+        compositeDisposables?.add(disposable)
     }
 }

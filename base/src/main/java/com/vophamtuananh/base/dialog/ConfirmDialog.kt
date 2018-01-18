@@ -19,14 +19,14 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
     private var mNoButtonText: String? = null
     private var mConfirmType = ConfirmType.WARNING
     private var mTag: String? = null
-    
+
     override fun getLayoutId(): Int {
         return R.layout.dialog_confirm
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewDataBinding!!.event = this
+        mViewDataBinding?.event = this
     }
 
     override fun onStart() {
@@ -42,23 +42,21 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
     }
 
     fun onYesCliked() {
-        if (mOnYesListener != null)
-            mOnYesListener!!.onChoseYes(mTag)
+        mOnYesListener?.onChoseYes(mTag)
         dismiss()
     }
 
     fun onNoCliked() {
-        if (mOnNoListener != null)
-            mOnNoListener!!.onChoseNo(mTag)
+        mOnNoListener?.onChoseNo(mTag)
         dismiss()
     }
 
     private fun setupTexts() {
-        mViewDataBinding!!.tvDescription.text = mDescription
-        mViewDataBinding!!.btnYes.text = mYesButtonText
-        mViewDataBinding!!.btnNo.text = mNoButtonText
+        mViewDataBinding?.tvDescription?.text = mDescription
+        mViewDataBinding?.btnYes?.text = mYesButtonText
+        mViewDataBinding?.btnNo?.text = mNoButtonText
         if (!TextUtils.isEmpty(mTitle)) {
-            mViewDataBinding!!.tvTitle.text = mTitle
+            mViewDataBinding?.tvTitle?.text = mTitle
             return
         }
         val title = when (mConfirmType) {
@@ -66,7 +64,7 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
             ConfirmDialog.ConfirmType.SUCCESS -> context.getString(R.string.success)
             else -> context.getString(R.string.warning)
         }
-        mViewDataBinding!!.tvTitle.text = title
+        mViewDataBinding?.tvTitle?.text = title
     }
 
     private fun setupBackgrouns() {
@@ -94,10 +92,10 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
                 iconId = R.drawable.ic_warning
             }
         }
-        mViewDataBinding!!.clParent.setBackgroundResource(backgroundParentId)
-        mViewDataBinding!!.btnYes.setBackgroundResource(backgroundYestId)
-        mViewDataBinding!!.btnNo.setBackgroundResource(backgroundNoId)
-        mViewDataBinding!!.ivIcon.setImageResource(iconId)
+        mViewDataBinding?.clParent?.setBackgroundResource(backgroundParentId)
+        mViewDataBinding?.btnYes?.setBackgroundResource(backgroundYestId)
+        mViewDataBinding?.btnNo?.setBackgroundResource(backgroundNoId)
+        mViewDataBinding?.ivIcon?.setImageResource(iconId)
     }
 
     fun show(onYesListener: OnYesListener? = null, onNoListener: OnNoListener? = null,

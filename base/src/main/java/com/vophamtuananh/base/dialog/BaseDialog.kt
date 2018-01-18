@@ -23,10 +23,10 @@ abstract class BaseDialog<T : ViewDataBinding>(context: Context) : Dialog(contex
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         mViewDataBinding = DataBindingUtil.inflate(LayoutInflater.from(context), getLayoutId(), null, false)
         setContentView(mViewDataBinding!!.root)
-        window!!.setWindowAnimations(R.style.DialogTheme)
+        window?.setWindowAnimations(R.style.DialogTheme)
     }
 
     override fun dismiss() {
