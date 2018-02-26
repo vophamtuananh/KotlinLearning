@@ -13,7 +13,7 @@ class MainViewModel : ActivityViewModel() {
     }
 
     public fun test() {
-        val view = view() as MainView
-        view.onTest()
+        val view : MainView? = view() as MainView
+        view?.onTest()
     }
 }
