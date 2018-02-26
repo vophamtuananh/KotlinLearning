@@ -1,11 +1,10 @@
 package com.vophamtuananh.base.imageloader
 
 import android.content.Context
+import android.graphics.Bitmap
+import com.vophamtuananh.base.utils.BitmapUtil
 import com.vophamtuananh.base.utils.FileUtil
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
 
 /**
  * Created by vophamtuananh on 1/12/18.
@@ -13,6 +12,8 @@ import java.io.InputStream
 class FileCacher(context: Context) {
 
     companion object {
+        private val MAX_CACHE_SIZE = 1500
+
         private const val IMAGE_CACHE_DIR_NAME = "cached_image"
 
         private const val MAX_SIZE = 209715200
@@ -37,7 +38,7 @@ class FileCacher(context: Context) {
         }
     }
 
-    internal fun getFile(url: String): File {
+    internal fun getFile(url: String): File? {
         val filename = url.hashCode().toString()
 
         return File(cacheDir, filename)
@@ -54,11 +55,11 @@ class FileCacher(context: Context) {
         val bufferSize = 1024
         var os: FileOutputStream? = null
 
+        var writtenByte: Long = 0
         if (!file.exists() || file.length() < fileSize) {
             if (file.exists())
                 file.delete()
             try {
-                var writtenByte: Long = 0
                 os = FileOutputStream(file)
                 val bytes = ByteArray(bufferSize)
                 while (true) {
@@ -81,6 +82,36 @@ class FileCacher(context: Context) {
                     }
 
                 }
+                if (file.exists()) {
+                    if (file.length() == 0L || writtenByte < fileSize) {
+                        file.delete()
+                    } else {
+                        compressImageFile(file, MAX_CACHE_SIZE, MAX_CACHE_SIZE)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun compressImageFile(imageFile: File, reqWidth: Int, reqHeight: Int) {
+        val destinationPath = imageFile.absolutePath
+        var fileOutputStream: FileOutputStream? = null
+        try {
+            val bitmap = BitmapUtil.decodeBitmapFromExitFile(imageFile, reqWidth, reqHeight)
+            imageFile.delete()
+            fileOutputStream = FileOutputStream(destinationPath)
+            bitmap?.compress(Bitmap.CompressFormat.WEBP, 85, fileOutputStream)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.flush()
+                    fileOutputStream.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
             }
         }
     }

@@ -126,6 +126,10 @@ class BitmapUtil {
             return BitmapFactory.decodeFile(path, opts)
         }
 
+        fun decodeBitmapFromExitFile(file: File, reqWidth: Int, reqHeight: Int, bitmapConfig: Bitmap.Config = Bitmap.Config.RGB_565): Bitmap? {
+            return decodeBitmapFromExitPath(file.absolutePath, reqWidth, reqHeight, bitmapConfig)
+        }
+
         private fun scaleBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap {
             var widthTmp = bitmap.width
             var heightTmp = bitmap.height

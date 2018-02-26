@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
-import android.text.TextUtils
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -26,6 +25,7 @@ import com.vophamtuananh.base.utils.DeviceUtil.Companion.CAMERA_REQUEST_CODE
 import com.vophamtuananh.base.utils.DeviceUtil.Companion.GALLERY_REQUEST_CODE
 import com.vophamtuananh.base.utils.DeviceUtil.Companion.PERMISSION_CALL_PHONE_REQUEST_CODE
 import com.vophamtuananh.base.utils.DeviceUtil.Companion.PERMISSION_CAMERA_REQUEST_CODE
+import com.vophamtuananh.base.utils.DeviceUtil.Companion.PERMISSION_LOCATION_REQUEST_CODE
 import com.vophamtuananh.base.utils.DeviceUtil.Companion.PERMISSION_READ_EXTERNAL_REQUEST_CODE
 import com.vophamtuananh.base.utils.DeviceUtil.Companion.PERMISSION_WRITE_STORAGE_REQUEST_CODE
 import com.vophamtuananh.base.utils.FileUtil
@@ -59,17 +59,16 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         if (getViewModelClass() != null)
             mViewModel = ViewModelProviders.of(this).get(getViewModelClass()!!)
         mViewModel?.onAttached(this)
-        super.onCreate(savedInstanceState)
-        mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
     }
 
     override fun onPause() {
         super.onPause()
-        if (mLoadingDialog != null && mLoadingDialog!!.isShowing)
-            mLoadingDialog?.dismiss()
+        mLoadingDialog?.dismiss()
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
@@ -123,7 +122,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
             }
         } else if (requestCode == PERMISSION_CALL_PHONE_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                callToPhoneNumber(mCurrentPhoneNumber!!)
+                mCurrentPhoneNumber?.let { callToPhoneNumber(it) }
             } else {
                 onRejectedPhoneCallPermission()
             }
@@ -132,6 +131,12 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
                 onAgreedWriteExternal()
             } else {
                 onRejectedWriteExternalPermission()
+            }
+        } else if (requestCode == PERMISSION_LOCATION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onAgreedLocationPermission()
+            } else {
+                onRejectedLocationPermission()
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -165,17 +170,21 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
     override fun showError(throwable: Throwable) {
         mInformDialog = getInformDialog()
         if (!mInformDialog!!.isShowing) {
-            var msg = throwable.message
-            if (TextUtils.isEmpty(msg)) {
-                msg = getString(R.string.unknown_error)
-            }
-            mInformDialog?.show(informType = InformDialog.InformType.WARNING, description = msg!!)
+            mInformDialog?.show(informType = InformDialog.InformType.WARNING, description = getThrowableMessage(throwable))
         }
     }
 
+    open protected fun getThrowableMessage(e: Throwable): String {
+        return getString(R.string.unknown_error)
+    }
+
     fun openCamera() {
-        val tempFile = FileUtil.getOutputMediaFile(applicationContext)
-        if (tempFile != null) {
+        openCamera(null)
+    }
+
+    fun openCamera(fileName: String?) {
+        val tempFile = FileUtil.getOutputMediaFile(applicationContext, fileName)
+        tempFile?.let {
             mCapturedPath = tempFile.absolutePath
             DeviceUtil.openCamera(this, tempFile)
         }
@@ -195,21 +204,25 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
         DeviceUtil.callToPhoneNumber(this, mCurrentPhoneNumber!!)
     }
 
-    protected fun onCapturedImage(path: String) {}
+    open protected fun onCapturedImage(path: String) {}
 
-    protected fun onChoseImage(uri: Uri) {}
+    open protected fun onChoseImage(uri: Uri) {}
 
-    protected fun onChoseNoImage() {}
+    open protected fun onChoseNoImage() {}
 
-    protected fun onRejectedCameraPermission() {}
+    open protected fun onRejectedCameraPermission() {}
 
-    protected fun onRejectedReadExternalPermission() {}
+    open protected fun onRejectedReadExternalPermission() {}
 
-    protected fun onRejectedPhoneCallPermission() {}
+    open protected fun onRejectedPhoneCallPermission() {}
 
-    protected fun onAgreedWriteExternal() {}
+    open protected fun onAgreedWriteExternal() {}
 
-    protected fun onRejectedWriteExternalPermission() {}
+    open protected fun onRejectedWriteExternalPermission() {}
+
+    open protected fun onAgreedLocationPermission() {}
+
+    open protected fun onRejectedLocationPermission() {}
 
     fun showLoadingDialog(onLoadingDilogListener: LoadingDialog.OnLoadingDialogListener? = null) {
         if (mLoadingDialog == null)
@@ -222,8 +235,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
     }
 
     fun hideLoadingDialog() {
-        if (mLoadingDialog != null && mLoadingDialog!!.isShowing)
-            mLoadingDialog?.dismiss()
+        mLoadingDialog?.dismiss()
     }
 
     fun getInformDialog(): InformDialog {

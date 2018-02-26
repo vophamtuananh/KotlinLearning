@@ -32,7 +32,6 @@ abstract class BaseDialog<T : ViewDataBinding>(context: Context) : Dialog(contex
     override fun dismiss() {
         super.dismiss()
         setOnCancelListener(null)
-
     }
 
 }

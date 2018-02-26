@@ -40,21 +40,7 @@ class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformation
     }
 
     private fun getBitmap(loadInformationKeeper: LoadInformationKeeper): Bitmap? {
-        val file = mFileCacher!!.getFile(loadInformationKeeper.url!!)
-        try {
-            if (file.exists()) {
-                val imageUrl = URL(loadInformationKeeper.url)
-                val conn = imageUrl.openConnection() as HttpURLConnection
-                conn.connectTimeout = 10000
-                conn.readTimeout = 10000
-                conn.instanceFollowRedirects = true
-                val size = conn.contentLength.toLong()
-                conn.disconnect()
-                if (file.length() < size) {
-                    file.delete()
-                }
-            }
-        } catch (ex: Throwable) {}
+        val file = mFileCacher!!.getFile(loadInformationKeeper.url!!) ?: return null
 
         var bitmap: Bitmap? = null
         if (file.exists())
@@ -91,7 +77,7 @@ class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformation
         val bitmap = BitmapUtil.getBitmapFromCachedFile(file, loadInformationKeeper.config)
         return when (loadInformationKeeper.scaleType) {
             LoadInformationKeeper.ScaleType.CROP -> crop(bitmap, loadInformationKeeper.width, loadInformationKeeper.height)
-            LoadInformationKeeper.ScaleType.CENTER_INSIDE -> centerIndide(bitmap, loadInformationKeeper.width, loadInformationKeeper.height)
+            LoadInformationKeeper.ScaleType.CENTER_INSIDE -> centerInside(bitmap, loadInformationKeeper.width, loadInformationKeeper.height)
             LoadInformationKeeper.ScaleType.SCALE_FULL_WIDTH -> scaleFullWidth(bitmap, loadInformationKeeper.width)
             LoadInformationKeeper.ScaleType.SCALE_FULL_HEIGHT -> scaleFullHeight(bitmap, loadInformationKeeper.height)
             else -> bitmap
@@ -123,7 +109,7 @@ class LoadImageRunnable(context: Context, loadInformationKeeper: LoadInformation
         return bitmap
     }
 
-    private fun centerIndide(source: Bitmap, showWidth: Int, showHeight: Int): Bitmap {
+    private fun centerInside(source: Bitmap, showWidth: Int, showHeight: Int): Bitmap {
         var bitmap = source
         val bitmapWidth = bitmap.width
         val bitmapHeight = bitmap.height

@@ -1,6 +1,7 @@
 package com.vophamtuananh.base.imageloader
 
 import android.graphics.Bitmap
+import com.vophamtuananh.base.R
 import java.lang.ref.WeakReference
 
 /**
@@ -9,8 +10,8 @@ import java.lang.ref.WeakReference
 class LoadInformationKeeper {
 
     internal var url: String? = null
-    internal var placeHolderId = 0
-    internal var errorHolderId = android.R.drawable.stat_notify_error
+    internal var placeHolderId = R.color.colorLightGrey
+    internal var errorHolderId = R.color.colorLightGrey
     internal var imageViewWeakReference: WeakReference<ILoadingImageView>? = null
     internal var width: Int = 0
     internal var height: Int = 0

@@ -69,6 +69,7 @@ open class ImageLoader(context: Context) {
                 return true
             }
 
+            loadingImageView.setResourceId(loadInformationKeeper.placeHolderId)
             imageViews.put(loadingImageView, loadInformationKeeper.url)
 
             val fileName = loadInformationKeeper.url!!.hashCode().toString()
@@ -77,9 +78,6 @@ open class ImageLoader(context: Context) {
                     mWaitingKeepers.add(loadInformationKeeper)
                 return false
             }
-
-            if (imageViewReused(loadInformationKeeper))
-                return true
 
             val bitmapDrawable = memoryCache!!.get(loadInformationKeeper.url + "-" + loadInformationKeeper.width + "-" + loadInformationKeeper.height)
             if (bitmapDrawable != null) {
@@ -92,6 +90,20 @@ open class ImageLoader(context: Context) {
             }
         }
         return true
+    }
+
+    private fun notifyWaitingKeepers() {
+        if (mContextWeakReference?.get() == null) {
+            mWaitingKeepers.clear()
+            return
+        }
+
+        val iterator = mWaitingKeepers.iterator()
+        while (iterator.hasNext()) {
+            val loadInformationKeeper = iterator.next()
+            if (imageViewReused(loadInformationKeeper) || show(loadInformationKeeper))
+                iterator.remove()
+        }
     }
 
     private fun queueDownloadPhoto(informationKeeper: LoadInformationKeeper) {
@@ -111,28 +123,14 @@ open class ImageLoader(context: Context) {
         if (context == null) {
             val fileName = loadInformationKeeper.url!!.hashCode().toString()
             mFileSynchronizer.unRegisterProcess(fileName)
-            handler.post { notifyWaitingKeepers(); }
+            handler.post { notifyWaitingKeepers() }
             return
         }
         preDisplaying(context, bitmap, loadInformationKeeper)
     }
 
-    protected fun reprocessBitmap(bitmap: Bitmap): Bitmap {
+    open protected fun reprocessBitmap(bitmap: Bitmap): Bitmap {
         return bitmap
-    }
-
-    private fun notifyWaitingKeepers() {
-        if (mContextWeakReference?.get() == null) {
-            mWaitingKeepers.clear()
-            return
-        }
-
-        val iter = mWaitingKeepers.iterator()
-        while (iter.hasNext()) {
-            val loadInformationKeeper = iter.next()
-            if (show(loadInformationKeeper))
-                iter.remove()
-        }
     }
 
     private fun preDisplaying(context: Context, bitmap: Bitmap?, loadInformationKeeper: LoadInformationKeeper) {
@@ -149,7 +147,7 @@ open class ImageLoader(context: Context) {
         val fileName = loadInformationKeeper.url!!.hashCode().toString()
         mFileSynchronizer.unRegisterProcess(fileName)
         if (imageViewReused(loadInformationKeeper)) {
-            handler.post { this.notifyWaitingKeepers() }
+            handler.post { notifyWaitingKeepers() }
             return
         }
         displayBitmap(bitmapDrawable, loadInformationKeeper)

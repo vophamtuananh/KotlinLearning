@@ -11,45 +11,43 @@ import java.lang.ref.WeakReference
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-open class FragmentViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
+open class FragmentViewModel : ViewModel(), LifecycleObserver {
 
-    @Volatile private var mViewWeakReference: WeakReference<V>? = null
+    @Volatile private var mViewWeakReference: WeakReference<CommonView>? = null
 
     private var compositeDisposables: CompositeDisposable? = null
 
-    protected fun view(): V? {
+    protected fun view(): CommonView? {
         return mViewWeakReference?.get()
     }
 
-    fun onAttach(view: V) {
+    open fun onAttach(view: CommonView) {
         mViewWeakReference = WeakReference(view)
         view.lifecycle.addObserver(this)
     }
 
+    open fun onInitialized() {}
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreated() {
+    open protected fun onCreated() {
         if (compositeDisposables == null)
             compositeDisposables = CompositeDisposable()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
-    }
-
+    open protected fun onStart() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
-    }
+    open protected fun onResume() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
-    }
+    open protected fun onPause() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() {
-    }
+    open protected fun onStop() {}
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY) internal fun onDestroy() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    open protected fun onDestroy() {
         val view = mViewWeakReference?.get()
         view?.lifecycle?.removeObserver(this)
     }

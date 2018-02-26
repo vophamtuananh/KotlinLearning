@@ -24,6 +24,7 @@ class DeviceUtil {
         val PERMISSION_READ_EXTERNAL_REQUEST_CODE = 1002
         val PERMISSION_CALL_PHONE_REQUEST_CODE = 1003
         val PERMISSION_WRITE_STORAGE_REQUEST_CODE = 1004
+        val PERMISSION_LOCATION_REQUEST_CODE = 1005
 
         val CAMERA_REQUEST_CODE = 1011
         val GALLERY_REQUEST_CODE = 1012
@@ -34,6 +35,24 @@ class DeviceUtil {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     return false
                 }
+            }
+            return true
+        }
+
+        private fun checkLocationPermission(context: Context): Boolean {
+            if (Build.VERSION.SDK_INT >= 23) {
+                if (ContextCompat.checkSelfPermission(context,
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return false
+                }
+            }
+            return true
+        }
+
+        fun requestLocationPermision(activity: Activity): Boolean {
+            if (!checkLocationPermission(activity)) {
+                ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_LOCATION_REQUEST_CODE)
+                return false
             }
             return true
         }

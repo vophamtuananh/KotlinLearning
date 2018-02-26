@@ -22,7 +22,7 @@ import com.vophamtuananh.base.viewmodel.FragmentViewModel
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonView>> : Fragment(), CommonView {
+abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel> : Fragment(), CommonView {
 
     protected var mViewDataBinding: B? = null
 
@@ -42,7 +42,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    protected fun getViewModelClass(): Class<VM>? {
+    open protected fun getViewModelClass(): Class<VM>? {
         return null
     }
 
@@ -60,10 +60,10 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
             val pushEnter = getPushEnterAnimId()
             val pushExit = getPushExitAnimId()
             val popEnter = getPopEnterAnimId()
-            if (mIsPush)
-                animation = AnimationUtils.loadAnimation(context, if (enter) pushEnter else pushExit)
+            animation = if (mIsPush)
+                AnimationUtils.loadAnimation(context, if (enter) pushEnter else pushExit)
             else
-                animation = AnimationUtils.loadAnimation(context, if (enter) popEnter else popExit)
+                AnimationUtils.loadAnimation(context, if (enter) popEnter else popExit)
         } else {
             if (enter) {
                 val left = getLeftInAnimId()
@@ -108,7 +108,7 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        return mViewDataBinding?.root
+        return mViewDataBinding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,11 +116,11 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
         onVisible()
         mViewCreated = true
         mViewDestroyed = false
-            mWaitThread?.continueProcessing()
+        mWaitThread?.continueProcessing()
     }
 
     override fun onDestroyView() {
-            mWaitThread?.stopProcessing()
+        mWaitThread?.stopProcessing()
         mViewDestroyed = true
         mViewCreated = false
         onInVisible()
@@ -157,8 +157,9 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
         return mInitialized
     }
 
-    fun initialized() {
+    open fun initialized() {
         mInitialized = false
+        mViewModel?.onInitialized()
     }
 
     fun isViewCreated(): Boolean {
@@ -181,49 +182,49 @@ abstract class BaseFragment<B : ViewDataBinding, VM : FragmentViewModel<CommonVi
         mIsPush = push
     }
 
-    fun isShouldSave(): Boolean {
+    open fun isShouldSave(): Boolean {
         return true
     }
 
-    protected fun onVisible() {}
+    open protected fun onVisible() {}
 
-    fun handleAfterVisible() {}
+    open fun handleAfterVisible() {}
 
-    protected fun onInVisible() {}
+    open protected fun onInVisible() {}
 
-    protected fun onCapturedImage(path: String) {}
+    open protected fun onCapturedImage(path: String) {}
 
-    protected fun onChoseImage(uri: Uri) {}
+    open protected fun onChoseImage(uri: Uri) {}
 
-    protected fun getPushExitAnimId(): Int {
+    open protected fun getPushExitAnimId(): Int {
         return R.anim.push_exit
     }
 
-    protected fun getPopEnterAnimId(): Int {
+    open protected fun getPopEnterAnimId(): Int {
         return R.anim.pop_enter
     }
 
-    protected fun getPopExitAnimId(): Int {
+    open protected fun getPopExitAnimId(): Int {
         return R.anim.pop_exit
     }
 
-    protected fun getPushEnterAnimId(): Int {
+    open protected fun getPushEnterAnimId(): Int {
         return R.anim.push_enter
     }
 
-    protected fun getLeftInAnimId(): Int {
+    open protected fun getLeftInAnimId(): Int {
         return R.anim.slide_in_left
     }
 
-    protected fun getRightInAnimId(): Int {
+    open protected fun getRightInAnimId(): Int {
         return R.anim.slide_in_right
     }
 
-    protected fun getLeftOutAnimId(): Int {
+    open protected fun getLeftOutAnimId(): Int {
         return R.anim.slide_out_left
     }
 
-    protected fun getRightOutAnimId(): Int {
+    open protected fun getRightOutAnimId(): Int {
         return R.anim.slide_out_right
     }
 }

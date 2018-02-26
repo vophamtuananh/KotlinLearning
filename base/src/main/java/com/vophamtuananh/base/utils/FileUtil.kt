@@ -4,8 +4,8 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.TextUtils
 import java.io.File
-import java.io.IOException
 
 /**
  * Created by vophamtuananh on 1/7/18.
@@ -14,7 +14,7 @@ class FileUtil {
 
     companion object {
         private val PROCESSING_DIR_NAME = "processing"
-        private val CAPTURED_FILE_NAME = "captured_file"
+        private val DEFAULT_IMAGE_FILE_NAME = "captured_file.jpg"
 
         fun getDiskCacheDir(context: Context, uniqueName: String): File {
             val cachePath = if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState())
@@ -29,20 +29,20 @@ class FileUtil {
             return context.externalCacheDir
         }
 
-        fun getOutputMediaFile(context: Context): File? {
+        fun getOutputMediaFile(context: Context, fileName: String?): File? {
             val mediaStorageDir = FileUtil.getDiskCacheDir(context, PROCESSING_DIR_NAME)
             if (!mediaStorageDir.exists()) {
                 if (!mediaStorageDir.mkdirs()) {
                     return null
                 }
             }
-            try {
-                return File.createTempFile(CAPTURED_FILE_NAME, ".jpg", mediaStorageDir)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
 
-            return null
+            val trueFileName = if (TextUtils.isEmpty(fileName)) DEFAULT_IMAGE_FILE_NAME else fileName + ".jpg"
+
+            val file = File(mediaStorageDir.path + File.separator + trueFileName)
+            if (file.exists())
+                file.delete()
+            return file
         }
 
         fun getRealPathFromURI(context: Context, contentUri: Uri): String? {
