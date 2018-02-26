@@ -8,7 +8,7 @@ import com.vophamtuananh.base.viewmodel.CommonView
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-abstract class BaseInjectingActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonView>, Component> : BaseActivity<B, VM>() {
+abstract class BaseInjectingActivity<B : ViewDataBinding, VM : ActivityViewModel, Component> : BaseActivity<B, VM>() {
 
     private var mComponent : Component? = null
 

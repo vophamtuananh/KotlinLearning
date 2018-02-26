@@ -35,7 +35,7 @@ import com.vophamtuananh.base.viewmodel.CommonView
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonView>> : AppCompatActivity(), CommonView {
+abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCompatActivity(), CommonView {
 
     protected var mViewDataBinding: B? = null
 
@@ -54,7 +54,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel<CommonVi
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    protected fun getViewModelClass(): Class<VM>? {
+    open protected fun getViewModelClass(): Class<VM>? {
         return null
     }
 

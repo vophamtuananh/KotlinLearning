@@ -12,17 +12,17 @@ import java.lang.ref.WeakReference
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-open class ActivityViewModel<V : CommonView> : ViewModel(), LifecycleObserver {
+open class ActivityViewModel : ViewModel(), LifecycleObserver {
 
-    @Volatile private var mViewWeakReference: WeakReference<V>? = null
+    @Volatile private var mViewWeakReference: WeakReference<CommonView>? = null
 
     private var compositeDisposables: CompositeDisposable? = null
 
-    protected fun view(): V? {
+    protected fun view(): CommonView? {
         return mViewWeakReference?.get()
     }
 
-    fun onAttached(view: V) {
+    fun onAttached(view: CommonView) {
         mViewWeakReference = WeakReference(view)
         view.lifecycle.addObserver(this)
     }
