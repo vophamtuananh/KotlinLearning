@@ -16,8 +16,8 @@ import java.util.ArrayList
 /**
  * Created by vophamtuananh on 1/12/18.
  */
-abstract class RecyclerAdapter<VH: RecyclerAdapter.BaseHolder<*, T>, T>(private var mOnItemClickListener: OnItemClickListener<T>? = null,
-                                                                        private var mComparator: ItemComparator<T>? = null) : RecyclerView.Adapter<VH>() {
+abstract class RecyclerAdapter<VH : RecyclerAdapter.BaseHolder<*, T>, T>(private var mOnItemClickListener: OnItemClickListener<T>? = null,
+                                                                         private var mComparator: ItemComparator<T>? = null) : RecyclerView.Adapter<VH>() {
 
     private val itemList = ArrayList<T>()
 
@@ -29,13 +29,11 @@ abstract class RecyclerAdapter<VH: RecyclerAdapter.BaseHolder<*, T>, T>(private 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH? {
         val viewHolder = getViewHolder(parent, viewType)
-        if (viewHolder != null) {
-            if (mOnItemClickListener != null) {
-                viewHolder.mViewDataBinding.root.setOnClickListener { view ->
-                    val pos = viewHolder.adapterPosition
-                    if (pos != NO_POSITION) {
-                        mOnItemClickListener!!.onItemClick(view, pos, itemList[pos])
-                    }
+        if (viewHolder != null && mOnItemClickListener != null) {
+            viewHolder.mViewDataBinding.root.setOnClickListener { view ->
+                val pos = viewHolder.adapterPosition
+                if (pos != NO_POSITION) {
+                    mOnItemClickListener!!.onItemClick(view, pos, itemList[pos])
                 }
             }
         }
@@ -91,11 +89,11 @@ abstract class RecyclerAdapter<VH: RecyclerAdapter.BaseHolder<*, T>, T>(private 
     private fun updateDiffItemsOnly(items: List<T>) {
         if (mCalculateDiffDisposable != null && !mCalculateDiffDisposable!!.isDisposed)
             mCalculateDiffDisposable!!.dispose()
-        mCalculateDiffDisposable = Single.fromCallable {calculateDiff(items)}
+        mCalculateDiffDisposable = Single.fromCallable { calculateDiff(items) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { updateItemsInModel(items) }
-                .subscribe{ result -> updateAdapterWithDiffResult(result) }
+                .subscribe { result -> updateAdapterWithDiffResult(result) }
     }
 
     private fun calculateDiff(newItems: List<T>): DiffUtil.DiffResult {
@@ -111,16 +109,16 @@ abstract class RecyclerAdapter<VH: RecyclerAdapter.BaseHolder<*, T>, T>(private 
         result.dispatchUpdatesTo(this)
     }
 
-    protected fun getDatas(): List<T> {
+    protected fun getData(): List<T> {
         return itemList
     }
 
-    fun release() {
+    open fun release() {
         mOnItemClickListener = null
         unRegisterDataObserver()
     }
 
-    open class BaseHolder<out V: ViewDataBinding, in T>(val mViewDataBinding: V) : RecyclerView.ViewHolder(mViewDataBinding.root) {
+    open class BaseHolder<out V : ViewDataBinding, in T>(val mViewDataBinding: V) : RecyclerView.ViewHolder(mViewDataBinding.root) {
 
         fun bindData(data: T) {}
     }

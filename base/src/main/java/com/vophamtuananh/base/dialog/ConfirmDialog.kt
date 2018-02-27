@@ -32,7 +32,6 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
     override fun onStart() {
         super.onStart()
         setupTexts()
-        setupBackgrouns()
     }
 
     override fun dismiss() {
@@ -41,20 +40,10 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
         super.dismiss()
     }
 
-    fun onYesCliked() {
-        mOnYesListener?.onChoseYes(mTag)
-        dismiss()
-    }
-
-    fun onNoCliked() {
-        mOnNoListener?.onChoseNo(mTag)
-        dismiss()
-    }
-
     private fun setupTexts() {
-        mViewDataBinding?.tvDescription?.text = mDescription
-        mViewDataBinding?.btnYes?.text = mYesButtonText
-        mViewDataBinding?.btnNo?.text = mNoButtonText
+        mViewDataBinding?.tvDescription?.text = if (!TextUtils.isEmpty(mDescription)) mDescription else ""
+        mViewDataBinding?.btnYes?.text = if (!TextUtils.isEmpty(mYesButtonText)) mYesButtonText else context.getString(R.string.yes)
+        mViewDataBinding?.btnNo?.text = if (!TextUtils.isEmpty(mNoButtonText)) mNoButtonText else context.getString(R.string.cancel)
         if (!TextUtils.isEmpty(mTitle)) {
             mViewDataBinding?.tvTitle?.text = mTitle
             return
@@ -67,51 +56,70 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
         mViewDataBinding?.tvTitle?.text = title
     }
 
-    private fun setupBackgrouns() {
-        val backgroundParentId: Int
-        val backgroundYestId: Int
-        val backgroundNoId: Int
-        val iconId: Int
-        when (mConfirmType) {
-            ConfirmDialog.ConfirmType.ERROR -> {
-                backgroundParentId = R.drawable.bg_error
-                backgroundYestId = R.drawable.bg_success
-                backgroundNoId = R.drawable.bg_error
-                iconId = R.drawable.ic_error
-            }
-            ConfirmDialog.ConfirmType.SUCCESS -> {
-                backgroundParentId = R.drawable.bg_success
-                backgroundYestId = R.drawable.bg_success
-                backgroundNoId = R.drawable.bg_error
-                iconId = R.drawable.ic_success
-            }
-            else -> {
-                backgroundParentId = R.drawable.bg_warning
-                backgroundYestId = R.drawable.bg_success
-                backgroundNoId = R.drawable.bg_warning
-                iconId = R.drawable.ic_warning
-            }
-        }
-        mViewDataBinding?.clParent?.setBackgroundResource(backgroundParentId)
-        mViewDataBinding?.btnYes?.setBackgroundResource(backgroundYestId)
-        mViewDataBinding?.btnNo?.setBackgroundResource(backgroundNoId)
-        mViewDataBinding?.ivIcon?.setImageResource(iconId)
+    fun showWithYesListener(onYesListener: OnYesListener) {
+        mOnYesListener = onYesListener
+        super.show()
     }
 
-    fun show(onYesListener: OnYesListener? = null, onNoListener: OnNoListener? = null,
-             title: String? = null, description: String = "",
-             confirmType: ConfirmType = ConfirmType.WARNING, yesText: String = context.getString(R.string.yes),
-             noText: String = context.getString(R.string.yes), tag: String? = null, cancelable: Boolean = true) {
+    fun showWithNoListener(onNoListener: OnNoListener) {
+        mOnNoListener = onNoListener
+        super.show()
+    }
+
+    fun showWithListener(onYesListener: OnYesListener, onNoListener: OnNoListener) {
         mOnYesListener = onYesListener
         mOnNoListener = onNoListener
-        mTitle = title
-        mDescription = description
-        mConfirmType = confirmType
-        mYesButtonText = yesText
-        mNoButtonText = noText
-        mTag = tag
-        setCancelable(cancelable)
         super.show()
+    }
+
+    fun setTitle(title: String): ConfirmDialog {
+        mTitle = title
+        return this
+    }
+
+    fun setDescription(description: String): ConfirmDialog {
+        mDescription = description
+        return this
+    }
+
+    fun setConfirmType(confirmType: ConfirmType): ConfirmDialog {
+        mConfirmType = confirmType
+        return this
+    }
+
+    fun setYesButtonText(yesText: String): ConfirmDialog {
+        mYesButtonText = yesText
+        return this
+    }
+
+    fun setNoButtonText(noText: String): ConfirmDialog {
+        mNoButtonText = noText
+        return this
+    }
+
+    fun setInformType(confirmType: ConfirmType): ConfirmDialog {
+        mConfirmType = confirmType
+        return this
+    }
+
+    fun setTag(tag: String): ConfirmDialog {
+        mTag = tag
+        return this
+    }
+
+    fun setCancelWhenTapOutSide(cancelable: Boolean): ConfirmDialog {
+        setCancelable(cancelable)
+        return this
+    }
+
+    fun onYesCliked() {
+        mOnYesListener?.onChoseYes(mTag)
+        dismiss()
+    }
+
+    fun onNoCliked() {
+        mOnNoListener?.onChoseNo(mTag)
+        dismiss()
     }
 
     interface OnYesListener {

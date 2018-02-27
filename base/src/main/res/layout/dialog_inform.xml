@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -10,117 +8,60 @@
             type="com.vophamtuananh.base.dialog.InformDialog" />
     </data>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent">
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/ll_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_white_corner"
+        android:gravity="center_horizontal"
+        android:minWidth="@dimen/positive_160dp"
+        android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/positive_15dp"
+            android:layout_marginStart="@dimen/positive_15dp"
+            android:layout_marginTop="@dimen/positive_15dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_size_14sp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/positive_15dp"
+            android:layout_marginEnd="@dimen/positive_15dp"
+            android:layout_marginStart="@dimen/positive_15dp"
+            android:layout_marginTop="@dimen/positive_5dp"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorGrey" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/btn_ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:onClick="@{() -> event.onConfirmClicked()}"
+            android:paddingBottom="@dimen/positive_8dp"
+            android:paddingTop="@dimen/positive_8dp"
+            android:text="@string/ok"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold" />
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_parent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_error"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_2"
-                app:layout_constraintStart_toEndOf="@+id/guideline_1"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/positive_25dp"
-                    android:layout_height="@dimen/positive_25dp"
-                    android:layout_marginStart="@dimen/positive_8dp"
-                    android:layout_marginTop="@dimen/positive_6dp"
-                    android:layout_marginBottom="@dimen/positive_6dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/cl_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:src="@drawable/ic_warning" />
-
-                <com.vophamtuananh.base.widgets.CustomFontTextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/positive_6dp"
-                    android:layout_marginTop="@dimen/positive_6dp"
-                    android:layout_marginBottom="@dimen/positive_6dp"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_size_16sp"
-                    app:layout_constraintStart_toEndOf="@+id/iv_icon"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/cl_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    tools:text="Warning" />
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/cl_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/positive_2dp"
-                    android:background="@drawable/bg_white_corner"
-                    android:padding="@dimen/positive_2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <com.vophamtuananh.base.widgets.CustomFontTextView
-                        android:id="@+id/tv_description"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/positive_10dp"
-                        android:layout_marginEnd="@dimen/positive_10dp"
-                        android:layout_marginTop="@dimen/positive_15dp"
-                        android:layout_marginBottom="@dimen/positive_15dp"
-                        android:gravity="center"
-                        android:textSize="@dimen/text_size_12sp"
-                        android:textColor="@color/text_color"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/btn_ok"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:text="Do you want to log out?" />
-
-                    <com.vophamtuananh.base.widgets.AnimButton
-                        android:id="@+id/btn_ok"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_error"
-                        android:text="@string/ok"
-                        android:textColor="@color/colorWhite"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/positive_8dp"
-                        android:paddingBottom="@dimen/positive_8dp"
-                        android:textSize="@dimen/text_size_14sp"
-                        android:onClick="@{() -> event.onConfirmClicked()}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-                </android.support.constraint.ConstraintLayout>
-
-            </android.support.constraint.ConstraintLayout>
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.1" />
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.9" />
-
-        </android.support.constraint.ConstraintLayout>
-    </FrameLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
 
 </layout>

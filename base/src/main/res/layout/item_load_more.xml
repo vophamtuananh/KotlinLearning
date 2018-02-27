@@ -9,7 +9,7 @@
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
-        <com.vophamtuananh.base.widgets.loading.LoadingView
+        <com.vophamtuananh.base.widgets.LoadingView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:lv_percent="20"

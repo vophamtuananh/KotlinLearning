@@ -121,6 +121,10 @@ class LoadMoreRecyclerView : RecyclerView {
     private class AdapterWrapper(private val mAdapter: RecyclerAdapter<RecyclerAdapter.BaseHolder<*, Any>, Any>)
         : RecyclerAdapter<RecyclerAdapter.BaseHolder<*, Any>, Any>() {
 
+        companion object {
+            private const val LOAD_MORE_TYPE = 100
+        }
+
         private var mNoMore = false
 
         override fun getViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.BaseHolder<*, Any>? {
@@ -171,11 +175,6 @@ class LoadMoreRecyclerView : RecyclerView {
 
         private class LoadMoreHolder<in T>(viewDataBinding: ItemLoadMoreBinding) : RecyclerAdapter.BaseHolder<ItemLoadMoreBinding, T>(viewDataBinding)
 
-        companion object {
-
-            private const val LOAD_MORE_TYPE = 100
-        }
-
     }
 
     private class DataObserver(private val mAdapterWrapper: AdapterWrapper) : RecyclerView.AdapterDataObserver() {
@@ -185,22 +184,42 @@ class LoadMoreRecyclerView : RecyclerView {
         }
 
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            if (mAdapterWrapper.itemCount == 0) {
+                mAdapterWrapper.notifyDataSetChanged()
+                return
+            }
             mAdapterWrapper.notifyItemRangeInserted(positionStart, itemCount)
         }
 
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+            if (mAdapterWrapper.itemCount == 0) {
+                mAdapterWrapper.notifyDataSetChanged()
+                return
+            }
             mAdapterWrapper.notifyItemRangeChanged(positionStart, itemCount)
         }
 
         override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+            if (mAdapterWrapper.itemCount == 0) {
+                mAdapterWrapper.notifyDataSetChanged()
+                return
+            }
             mAdapterWrapper.notifyItemRangeChanged(positionStart, itemCount, payload)
         }
 
         override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            if (mAdapterWrapper.itemCount == 0) {
+                mAdapterWrapper.notifyDataSetChanged()
+                return
+            }
             mAdapterWrapper.notifyItemRangeRemoved(positionStart, itemCount)
         }
 
         override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+            if (mAdapterWrapper.itemCount == 0) {
+                mAdapterWrapper.notifyDataSetChanged()
+                return
+            }
             mAdapterWrapper.notifyItemMoved(fromPosition, toPosition)
         }
     }

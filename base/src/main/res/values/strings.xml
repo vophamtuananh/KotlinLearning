@@ -6,8 +6,8 @@
     <string name="warning">Warning</string>
     <string name="success">Success</string>
     <string name="ok">OK</string>
-    <string name="cancel">CANCEL</string>
-    <string name="yes">YES</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
     <string name="no">NO</string>
     <string name="no_network">No Network Connection. Please check connection and retry.</string>
 </resources>

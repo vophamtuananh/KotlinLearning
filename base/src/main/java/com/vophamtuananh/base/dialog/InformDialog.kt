@@ -32,7 +32,6 @@ class InformDialog(context: Context) : BaseDialog<DialogInformBinding>(context) 
     override fun onStart() {
         super.onStart()
         setupTexts()
-        setupBackgrouns()
     }
 
     private fun setupTexts() {
@@ -58,28 +57,6 @@ class InformDialog(context: Context) : BaseDialog<DialogInformBinding>(context) 
     fun onConfirmClicked() {
         mOnConfirmListener?.onConfirmed(mTag)
         dismiss()
-    }
-
-    private fun setupBackgrouns() {
-        val backgroundId: Int
-        val iconId: Int
-        when (mInformType) {
-            InformDialog.InformType.SUCCESS -> {
-                backgroundId = R.drawable.bg_success
-                iconId = R.drawable.ic_success
-            }
-            InformDialog.InformType.WARNING -> {
-                backgroundId = R.drawable.bg_warning
-                iconId = R.drawable.ic_warning
-            }
-            else -> {
-                backgroundId = R.drawable.bg_error
-                iconId = R.drawable.ic_error
-            }
-        }
-        mViewDataBinding?.clParent?.setBackgroundResource(backgroundId)
-        mViewDataBinding?.btnOk?.setBackgroundResource(backgroundId)
-        mViewDataBinding?.ivIcon?.setImageResource(iconId)
     }
 
     fun show(onConfirmListener: OnConfirmListener? = null, title: String? = null,
