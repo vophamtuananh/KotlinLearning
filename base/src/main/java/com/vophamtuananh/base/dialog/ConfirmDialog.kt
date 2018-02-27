@@ -56,60 +56,20 @@ class ConfirmDialog(context: Context) : BaseDialog<DialogConfirmBinding>(context
         mViewDataBinding?.tvTitle?.text = title
     }
 
-    fun showWithYesListener(onYesListener: OnYesListener) {
-        mOnYesListener = onYesListener
-        super.show()
-    }
-
-    fun showWithNoListener(onNoListener: OnNoListener) {
-        mOnNoListener = onNoListener
-        super.show()
-    }
-
-    fun showWithListener(onYesListener: OnYesListener, onNoListener: OnNoListener) {
+    fun show(onYesListener: OnYesListener? = null, onNoListener: OnNoListener? = null,
+             title: String? = null, description: String = "",
+             confirmType: ConfirmType = ConfirmType.WARNING, yesText: String = context.getString(R.string.yes),
+             noText: String = context.getString(R.string.yes), tag: String? = null, cancelable: Boolean = true) {
         mOnYesListener = onYesListener
         mOnNoListener = onNoListener
-        super.show()
-    }
-
-    fun setTitle(title: String): ConfirmDialog {
         mTitle = title
-        return this
-    }
-
-    fun setDescription(description: String): ConfirmDialog {
         mDescription = description
-        return this
-    }
-
-    fun setConfirmType(confirmType: ConfirmType): ConfirmDialog {
         mConfirmType = confirmType
-        return this
-    }
-
-    fun setYesButtonText(yesText: String): ConfirmDialog {
         mYesButtonText = yesText
-        return this
-    }
-
-    fun setNoButtonText(noText: String): ConfirmDialog {
         mNoButtonText = noText
-        return this
-    }
-
-    fun setInformType(confirmType: ConfirmType): ConfirmDialog {
-        mConfirmType = confirmType
-        return this
-    }
-
-    fun setTag(tag: String): ConfirmDialog {
         mTag = tag
-        return this
-    }
-
-    fun setCancelWhenTapOutSide(cancelable: Boolean): ConfirmDialog {
         setCancelable(cancelable)
-        return this
+        super.show()
     }
 
     fun onYesCliked() {

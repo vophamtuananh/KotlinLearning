@@ -3,7 +3,6 @@ package com.vophamtuananh.base.dialog
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.WindowManager
 import com.vophamtuananh.base.R
 import com.vophamtuananh.base.databinding.DialogInformBinding
 
@@ -25,7 +24,6 @@ class InformDialog(context: Context) : BaseDialog<DialogInformBinding>(context) 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT)
         mViewDataBinding?.event = this
     }
 
