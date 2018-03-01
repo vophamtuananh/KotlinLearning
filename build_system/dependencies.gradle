@@ -7,8 +7,9 @@ allprojects {
 
 ext {
     // Libraries
-    rxJava2 = '2.1.7'
-    rxAndroid = '2.0.1'
+    rxJava2 = '2.1.10'
+    rxKotlin2 = '2.2.0'
+    rxAndroid = '2.0.2'
     archLifecycle = '1.0.0'
     androidSupportLibrary = '27.0.2'
     constraintLayout = '1.1.0-beta4'
@@ -34,10 +35,11 @@ ext {
     espresso = '3.0.1'
 
     // Kotlin
-    kotlin = '1.2.10'
+    kotlin = '1.2.21'
     kotlinBindingCompiler = '3.0.1'
 
     commonDependencies = [
+            rxKotlin2                   : "io.reactivex.rxjava2:rxkotlin:${rxKotlin2}",
             rxJava2                     : "io.reactivex.rxjava2:rxjava:${rxJava2}",
             rxAndroid                   : "io.reactivex.rxjava2:rxandroid:${rxAndroid}",
 

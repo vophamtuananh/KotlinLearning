@@ -22,36 +22,30 @@ open class ActivityViewModel : ViewModel(), LifecycleObserver {
         return mViewWeakReference?.get()
     }
 
-    fun onAttached(view: CommonView) {
+    open fun onAttached(view: CommonView) {
         mViewWeakReference = WeakReference(view)
         view.lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreated() {
+    open fun onCreated() {
         if (compositeDisposables == null)
             compositeDisposables = CompositeDisposable()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun resume() {
-    }
+    open fun resume() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun pause() {
-    }
+    open fun pause() {}
 
 
-    fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    open fun onRestoreInstanceState(savedInstanceState: Bundle) {}
 
-    }
-
-    fun onSaveInstanceState(outState: Bundle) {
-
-    }
+    open fun onSaveInstanceState(outState: Bundle) {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun cleanup() {
+    open fun cleanup() {
         val view = mViewWeakReference?.get()
         view?.lifecycle?.removeObserver(this)
     }
@@ -61,7 +55,7 @@ open class ActivityViewModel : ViewModel(), LifecycleObserver {
         compositeDisposables?.dispose()
     }
 
-    fun addDisposable(disposable: Disposable) {
+    protected fun addDisposable(disposable: Disposable) {
         compositeDisposables?.add(disposable)
     }
 }

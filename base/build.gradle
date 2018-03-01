@@ -55,6 +55,10 @@ dependencies {
     implementation commonDependencies.kotlin
     kapt commonDependencies.kotlinBindingCompiler
 
+    // RxKotlin
+    api commonDependencies.rxKotlin2
+    api commonDependencies.rxAndroid
+
     // Android
     api commonDependencies.supportAppCompatV7
     api commonDependencies.supportRecyclerView
@@ -68,10 +72,6 @@ dependencies {
     // Dagger 2
     api commonDependencies.dagger2
     kapt commonDependencies.dagger2Compiler
-
-    // Rx
-    api commonDependencies.rxJava2
-    api commonDependencies.rxAndroid
 
     // Testing
     testImplementation commonTestDependencies.junit

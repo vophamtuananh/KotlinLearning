@@ -7,11 +7,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
+    def androidVersions = rootProject.ext.android
+
+    compileSdkVersion androidVersions.compileSdkVersion
+
     defaultConfig {
         applicationId "vophamtuananh.com.kotlinlearning"
-        minSdkVersion 21
-        targetSdkVersion 26
+        minSdkVersion androidVersions.minSdkVersion
+        targetSdkVersion androidVersions.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,6 +33,10 @@ android {
 
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -38,6 +45,10 @@ dependencies {
     // Kotlin
     implementation commonDependencies.kotlin
     kapt commonDependencies.kotlinBindingCompiler
+
+    // RxKotlin
+    api commonDependencies.rxKotlin2
+    api commonDependencies.rxAndroid
 
     // Dagger 2
     api commonDependencies.dagger2

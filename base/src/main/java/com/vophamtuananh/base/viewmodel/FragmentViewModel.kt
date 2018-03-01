@@ -29,25 +29,25 @@ open class FragmentViewModel : ViewModel(), LifecycleObserver {
     open fun onInitialized() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    open protected fun onCreated() {
+    open fun onCreated() {
         if (compositeDisposables == null)
             compositeDisposables = CompositeDisposable()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    open protected fun onStart() {}
+    open fun onStart() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    open protected fun onResume() {}
+    open fun onResume() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    open protected fun onPause() {}
+    open fun onPause() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    open protected fun onStop() {}
+    open fun onStop() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    open protected fun onDestroy() {
+    open fun onDestroy() {
         val view = mViewWeakReference?.get()
         view?.lifecycle?.removeObserver(this)
     }

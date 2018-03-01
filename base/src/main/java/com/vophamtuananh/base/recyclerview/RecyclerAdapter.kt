@@ -120,7 +120,7 @@ abstract class RecyclerAdapter<VH : RecyclerAdapter.BaseHolder<*, T>, T>(private
 
     open class BaseHolder<out V : ViewDataBinding, in T>(val mViewDataBinding: V) : RecyclerView.ViewHolder(mViewDataBinding.root) {
 
-        fun bindData(data: T) {}
+        open fun bindData(data: T) {}
     }
 
     interface OnItemClickListener<in T> {

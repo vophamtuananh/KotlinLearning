@@ -178,11 +178,7 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
         return getString(R.string.unknown_error)
     }
 
-    fun openCamera() {
-        openCamera(null)
-    }
-
-    fun openCamera(fileName: String?) {
+    fun openCamera(fileName: String? = null) {
         val tempFile = FileUtil.getOutputMediaFile(applicationContext, fileName)
         tempFile?.let {
             mCapturedPath = tempFile.absolutePath
@@ -224,14 +220,14 @@ abstract class BaseActivity<B : ViewDataBinding, VM : ActivityViewModel> : AppCo
 
     open protected fun onRejectedLocationPermission() {}
 
-    fun showLoadingDialog(onLoadingDilogListener: LoadingDialog.OnLoadingDialogListener? = null) {
+    fun showLoadingDialog(onLoadingDialogListener: LoadingDialog.OnLoadingDialogListener? = null) {
         if (mLoadingDialog == null)
             mLoadingDialog = LoadingDialog(this)
 
         if (mLoadingDialog!!.isShowing)
             return
 
-        mLoadingDialog?.showWithListener(onLoadingDilogListener)
+        mLoadingDialog?.showWithListener(onLoadingDialogListener)
     }
 
     fun hideLoadingDialog() {
