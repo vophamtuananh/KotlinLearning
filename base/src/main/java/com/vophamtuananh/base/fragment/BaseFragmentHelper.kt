@@ -2,15 +2,16 @@ package com.vophamtuananh.base.fragment
 
 import android.support.v4.app.FragmentManager
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by vophamtuananh on 1/7/18.
  */
-open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedFragmentListener: OnChangedFragmentListener? = null,
+open class BaseFragmentHelper<in T : BaseFragment<*, *>> @Inject constructor(private var mOnChangedFragmentListener: OnChangedFragmentListener? = null,
                                                          fragmentProvider: FragmentProvider<T>,
                                                          shouldShowPosition: Int) {
 
-    private var mPageList: ArrayList<Stack<T>>? = null
+    private lateinit var mPageList: ArrayList<Stack<T>>
     private var mPageIndex: Int = 0
     private var mLayoutId: Int = 0
     private val mFragmentManager: FragmentManager
@@ -30,10 +31,10 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
         for (fragment in fragments) {
             val stack = Stack<T>()
             stack.push(fragment)
-            mPageList!!.add(stack)
+            mPageList.add(stack)
         }
 
-        val fragment = mPageList!![mPageIndex].peek()
+        val fragment = mPageList[mPageIndex].peek()
         if (fragment.isAdded || fragment.isDetached || fragment.isHidden) {
             showFragment(mPageIndex)
         } else {
@@ -46,7 +47,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
     }
 
     fun pushFragment(fragment: T) {
-        val currentStack = mPageList!![mPageIndex]
+        val currentStack = mPageList[mPageIndex]
         if (currentStack.peek().getTagName() == fragment.getTagName())
             return
 
@@ -76,24 +77,24 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
     }
 
     fun popFragmentToRoot(): Boolean {
-        val level = mPageList!![mPageIndex].size - 1
+        val level = mPageList[mPageIndex].size - 1
         return popFragment(level)
     }
 
     private fun popFragment(l: Int): Boolean {
         var level = l
         if (level <= 0) return false
-        if (mPageList!![mPageIndex].size <= level) return false
+        if (mPageList[mPageIndex].size <= level) return false
         val transaction = mFragmentManager.beginTransaction()
 
         while (level >= 1) {
-            val fragment = mPageList!![mPageIndex].pop()
+            val fragment = mPageList[mPageIndex].pop()
             fragment.setCurrentScreen(true)
             fragment.setPush(false)
             transaction.remove(fragment)
             level--
         }
-        val showFragment = mPageList!![mPageIndex].peek()
+        val showFragment = mPageList[mPageIndex].peek()
 
         mOnChangedFragmentListener?.onChangedFragment(showFragment)
 
@@ -109,11 +110,10 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
         return true
     }
 
-
     fun showFragment(index: Int) {
         if (index == mPageIndex) return
-        val showFragment = mPageList!![mPageIndex].peek()
-        val hideFragment = mPageList!![mPageIndex].peek()
+        val showFragment = mPageList[mPageIndex].peek()
+        val hideFragment = mPageList[mPageIndex].peek()
         val transaction = mFragmentManager.beginTransaction()
 
         if (mPageIndex > index) {
@@ -150,7 +150,7 @@ open class BaseFragmentHelper<in T : BaseFragment<*, *>>(private var mOnChangedF
     }
 
     fun getCurrentFragment(): BaseFragment<*, *> {
-        return mPageList!![mPageIndex].peek()
+        return mPageList[mPageIndex].peek()
     }
 
     interface OnChangedFragmentListener {

@@ -8,6 +8,13 @@
         <attr name="witv_drawable_height" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="WithIconButton">
+        <attr name="wibt_symbol" format="string" />
+        <attr name="wibt_symbol_color" format="color" />
+        <attr name="wibt_drawable_width" format="dimension" />
+        <attr name="wibt_drawable_height" format="dimension" />
+    </declare-styleable>
+
     <declare-styleable name="AnimButton">
         <attr name="ab_font" format="string" />
         <attr name="ab_drawable_height" format="dimension" />
